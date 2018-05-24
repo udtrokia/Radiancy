@@ -1,0 +1,6 @@
+[package]
+name = "radiancy"
+version = "0.1.0"
+authors = ["mercury <udtrokia@163.com>"]
+
+[dependencies]
