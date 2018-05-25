@@ -15,8 +15,47 @@ pub struct Block {
     hash: String
 }
 
+impl Block {
+    fn set_hash(self) -> Block {
+        let mut hasher = Sha256::new();
+        let header: String = String::new()  + &self.timestamp + &self.data + &self.prev_block_hash;
+        hasher.input_str(&header);
+
+        return Block {
+            hash: String::from(hasher.result_str().as_str()),
+            ..self
+        }
+    }
+}
+
 pub struct Blockchain {
-    blocks: [Block]
+    blocks: Vec<Block>
+}
+
+impl Blockchain {
+    fn add_block(&mut self, data: String) {
+        let ref prev_block: Block = self.blocks[self.blocks.len() - 1]; // immutable
+        let _new_block: Block = new_block(data, String::from(prev_block.hash.as_str()));
+        self.blocks.push(_new_block)
+    }
+}
+
+fn new_block(data: String, prev_block_hash: String) -> Block {
+    let block = Block {
+        timestamp: ts(),
+        data: data,
+        prev_block_hash: prev_block_hash,
+        hash: String::new()
+    };
+    block.set_hash()
+}
+
+fn new_genesis_block() -> Block {
+    return new_block(String::from("Genesiis Block"), String::new());
+}
+
+fn new_blockchain() -> Blockchain {
+    return Blockchain {blocks: vec![new_genesis_block()]}
 }
 
 fn ts() -> String {
@@ -26,33 +65,6 @@ fn ts() -> String {
     let in_ms = since_the_epoch.as_secs() * 1000 +
         since_the_epoch.subsec_nanos() as u64 / 1_000_000;
     return in_ms.to_string()
-}
-
-fn set_hash(b: Block) -> Block {
-    let mut hasher = Sha256::new();
-    let header: String = b.timestamp + &b.data + &b.prev_block_hash;
-    hasher.input_str(&header);
-    
-    let block = Block {
-        hash: hasher.result_str(),
-        timestamp: b.timestamp,
-        data: b.data,
-        prev_block_hash: b.prev_block_hash
-    };
-    return block;
-}
-
-fn new_block(data: String, prev_block_hash: String) -> Block {
-    let block = Block {
-        timestamp: ts(),
-        data: data,
-        prev_block_hash: prev_block_hash,
-        hash: "".to_string()
-    };
-//    println!("{}{}{}{}", block.timestamp, block.data, block.prev_block_hash, block.hash);
-//    let hash = set_hash(block);
-//    println!("{}", hash);
-    return block;
 }
 
 fn main() {
