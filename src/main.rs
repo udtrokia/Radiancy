@@ -1,9 +1,12 @@
 extern crate bytes;
 extern crate crypto;
+extern crate colored;
 
 use std::time::{SystemTime, UNIX_EPOCH};
 use crypto::digest::Digest;
 use crypto::sha2::Sha256;
+use colored::*;
+
 //use std::io::{self, Read};
 //use bytes::{Bytes};
 
@@ -64,7 +67,7 @@ impl Blockchain {
         let _prev_hash: String = self.get_prev_hash();
         let _new_block: Block = new_block(data, String::from(_prev_hash));
         // let _new_block: Block = new_block(data, _prev_hash.to_string());
-        println!("  new block data: {:?}", _new_block.data);
+        // println!("  new block data: {:?}", _new_block.data);
         // let _blocks = (self.blocks).clone();
 
         self.blocks.push(_new_block);
@@ -109,9 +112,14 @@ fn main() {
     //     _add_block(String::from("hello, world"));
     //     _add_block(String::from("hello, world"));        
     // }
-    blockchain = blockchain.add_block(String::from("hello, world"));
-    blockchain = blockchain.add_block(String::from("hello, world"));    
-    // blockchain.add_block(String::from("hello, world"));    
+    blockchain = blockchain.add_block(String::from("Hi, Pluto. I'm Basquiat."));
+    blockchain = blockchain.add_block(String::from("Can you be my friend?"));
+    for _block in blockchain.blocks {
+        println!("\nPrev. hash: {}", _block.prev_block_hash.yellow());
+		    println!("Data: {}", _block.data.magenta());
+		    println!("Hash: {}\n", _block.hash.bold().underline().cyan());
+    };
+    // blockchain.add_block(String::from("hello, world"));
     // blockchain.add_block(String::from("hello, world"));
     // let _block: Block = new_genesis_block();
     // println!("{:?}", _block.hash)

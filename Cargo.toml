@@ -6,3 +6,4 @@ authors = ["mercury <udtrokia@163.com>"]
 [dependencies]
 bytes = "0.4"
 rust-crypto = "^0.2"
+colored = "1.6"
