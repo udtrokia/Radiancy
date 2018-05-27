@@ -1,5 +1,4 @@
-
-# Main Title
+# Basquiat - Main Title
 
 ```rust
 extern crate colored; 
