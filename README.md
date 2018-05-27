@@ -3,9 +3,7 @@
 
 ![Seine](./assets/Seine.png)
 
-
-
-## Chapter 1 - Basquiat - Orphan Blockchain
+## [Chapter 1 - Basquiat - Orphan Blockchain](/.docs/basquiat/README.md)
 
 + One file version - [v0.0.5][1]
 + Stable version - [v0.0.6][2]
