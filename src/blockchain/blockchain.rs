@@ -5,12 +5,11 @@
 */
 use blockchain::block::{
     Block, new_block, new_genesis_block
-}; // Get our block models.
+};
 
 pub struct Blockchain { pub blocks: Vec<Block> } 
 
 impl Blockchain {
-    #[warn(dead_code)]
     pub fn get_prev_hash(&self) -> String {
         let prev_block: &Block = &self.blocks[self.blocks.len() -1];
         let prev_hash: String = (&prev_block.hash).to_string();

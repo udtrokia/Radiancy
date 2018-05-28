@@ -78,7 +78,7 @@ fn set_hash(self) -> Block {
 }
 ```
 
-In the file `set_hash`, we return a new struct to the variable(Type is Block). And the value of the preview struct had moved into the new strcut then released. This process is a nice implement accrod the principle of rust `ownership`.
+In the file `set_hash`, we return a new struct to the variable(Type is Block). And the value of the preview struct had moved into the new struct then released. This process is a nice implement accrod the principle of rust `ownership`.
 
 ```
 [Block]
@@ -103,10 +103,10 @@ let mut hasher = Sha256::new();
 ```
 Wait... why I added mut in the line? 
 
-__Here is a question of `Mutable`, `Copy`, `Clone`, `&`, what the hell with these methods?__
+__Here is a question of `Mutable`, `Copy`, `Clone`, `&`: what the hell with these methods?__
 > Recommend to read the docs, and I'll explain all of them in `Blockchain` field.
 
-Acutally, mut `recive` the value of right side. And give us authority to change the value at the exact internal storage.
+Acutally, mut `receive` the value of right side. And give us authority to change the value at the exact internal storage.
 
 ## Summary
 

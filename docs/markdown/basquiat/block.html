@@ -269,7 +269,7 @@
     }
 }
 </code></pre>
-<p>In the file <code>set_hash</code>, we return a new struct to the variable(Type is Block). And the value of the preview struct had moved into the new strcut then released. This process is a nice implement accrod the principle of rust <code>ownership</code>.</p>
+<p>In the file <code>set_hash</code>, we return a new struct to the variable(Type is Block). And the value of the preview struct had moved into the new struct then released. This process is a nice implement accrod the principle of rust <code>ownership</code>.</p>
 <pre><code>[Block]
     [Block.set_hash() =&gt;
         {Block} with new_hash
@@ -286,11 +286,11 @@
 <pre><code class="lang-rust"><span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> hasher = Sha256::new();
 </code></pre>
 <p>Wait... why I added mut in the line? </p>
-<p><strong>Here is a question of <code>Mutable</code>, <code>Copy</code>, <code>Clone</code>, <code>&amp;</code>, what the hell with these methods?</strong></p>
+<p><strong>Here is a question of <code>Mutable</code>, <code>Copy</code>, <code>Clone</code>, <code>&amp;</code>: what the hell with these methods?</strong></p>
 <blockquote>
 <p>Recommend to read the docs, and I&apos;ll explain all of them in <code>Blockchain</code> field.</p>
 </blockquote>
-<p>Acutally, mut <code>recive</code> the value of right side. And give us authority to change the value at the exact internal storage.</p>
+<p>Acutally, mut <code>receive</code> the value of right side. And give us authority to change the value at the exact internal storage.</p>
 <h2 id="summary">Summary</h2>
 <ul>
 <li><p><strong>We need to be conscious of the ownership in Rust in high-level types.</strong></p>
@@ -341,7 +341,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Block","level":"1.2.2","depth":2,"next":{"title":"Blockchain","level":"1.2.3","depth":2,"path":"markdown/basquiat/blockchain.md","ref":"markdown/basquiat/blockchain.md","articles":[]},"previous":{"title":"Main","level":"1.2.1","depth":2,"path":"markdown/basquiat/main.md","ref":"markdown/basquiat/main.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"markdown/basquiat/block.md","mtime":"2018-05-27T09:36:18.306Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-05-27T09:36:29.477Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Block","level":"1.2.2","depth":2,"next":{"title":"Blockchain","level":"1.2.3","depth":2,"path":"markdown/basquiat/blockchain.md","ref":"markdown/basquiat/blockchain.md","articles":[]},"previous":{"title":"Main","level":"1.2.1","depth":2,"path":"markdown/basquiat/main.md","ref":"markdown/basquiat/main.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"markdown/basquiat/block.md","mtime":"2018-05-27T10:21:57.068Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-05-28T07:07:50.021Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>

@@ -203,7 +203,85 @@
     
                                 <section class="normal markdown-section">
                                 
-                                
+                                <h1 id="basquiat---blockchain">Basquiat - Blockchain</h1>
+<pre><code class="lang-rust"><span class="hljs-keyword">use</span> blockchain::block::{
+    Block, new_block, new_genesis_block
+}; 
+
+<span class="hljs-keyword">pub</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Blockchain</span></span> { <span class="hljs-keyword">pub</span> blocks: <span class="hljs-built_in">Vec</span>&lt;Block&gt; } 
+
+<span class="hljs-keyword">impl</span> Blockchain {
+    <span class="hljs-keyword">pub</span> <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">get_prev_hash</span></span>(&amp;<span class="hljs-keyword">self</span>) -&gt; <span class="hljs-built_in">String</span> {
+        <span class="hljs-keyword">let</span> prev_block: &amp;Block = &amp;<span class="hljs-keyword">self</span>.blocks[<span class="hljs-keyword">self</span>.blocks.len() -<span class="hljs-number">1</span>];
+        <span class="hljs-keyword">let</span> prev_hash: <span class="hljs-built_in">String</span> = (&amp;prev_block.hash).to_string();
+        <span class="hljs-keyword">return</span> prev_hash;
+    }
+    <span class="hljs-keyword">pub</span> <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">add_block</span></span>(<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>, data: <span class="hljs-built_in">String</span>) -&gt; Blockchain {
+        <span class="hljs-keyword">let</span> _prev_hash: <span class="hljs-built_in">String</span> = <span class="hljs-keyword">self</span>.get_prev_hash();
+        <span class="hljs-keyword">let</span> _new_block: Block = new_block(data, <span class="hljs-built_in">String</span>::from(_prev_hash));
+
+        <span class="hljs-keyword">self</span>.blocks.push(_new_block);
+        <span class="hljs-keyword">return</span> Blockchain {
+            blocks: <span class="hljs-keyword">self</span>.blocks
+        };
+    }
+}
+
+<span class="hljs-keyword">pub</span> <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">new_blockchain</span></span>() -&gt; Blockchain {
+    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> _new_blockchain = Blockchain {
+        blocks: <span class="hljs-built_in">vec!</span>[new_genesis_block()]
+    };
+    <span class="hljs-keyword">return</span> _new_blockchain;
+}
+</code></pre>
+<ul>
+<li>Vector</li>
+<li>Borrow &amp;&amp; Self</li>
+</ul>
+<h2 id="vector">Vector</h2>
+<pre><code class="lang-rust"><span class="hljs-keyword">pub</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Blockchain</span></span> { <span class="hljs-keyword">pub</span> blocks: <span class="hljs-built_in">Vec</span>&lt;Block&gt; }
+</code></pre>
+<p><code>Vector</code> seems like the basic type <code>array</code>, what make them different is: We don&apos;t need to define the arrays` content specificly. We can change it, expand it, even more reduce it.</p>
+<p>The way we define a <code>Vec</code> is:</p>
+<pre><code class="lang-rust"><span class="hljs-keyword">let</span> x: <span class="hljs-built_in">Vec</span>&lt;T&gt; = <span class="hljs-built_in">vec!</span>[..]
+</code></pre>
+<ul>
+<li>Vec<t> means a series Vector of type <code>&lt;T&gt;</code> type.</t></li>
+<li><code>vec!</code> is a macro to create <code>Vector</code></li>
+</ul>
+<h2 id="borrow--self">Borrow &amp;&amp; Self</h2>
+<h4 id="borrow">Borrow</h4>
+<p>Borrow covers a wide range of issues. This article we only introduce one aspect. If want to read the complete, I recommend you to read my independent rust notes or read the docs.</p>
+<pre><code>pub fn get_prev_hash(&amp;self)
+</code></pre><p>If you remember what happened to <code>mut</code>. I think you&apos;ve already knowed what does <code>Borrow</code> exactly mean. I use the value with the internal storage we have already setted. <code>&amp;some_var</code> means <code>Borrow</code>.</p>
+<h4 id="self">Self</h4>
+<pre><code class="lang-rust"><span class="hljs-keyword">impl</span> Blockchain {
+    <span class="hljs-keyword">pub</span> <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">get_prev_hash</span></span>(&amp;<span class="hljs-keyword">self</span>) -&gt; <span class="hljs-built_in">String</span> { 
+
+    }
+}
+</code></pre>
+<p><code>self</code> is the type of the current object. It may appear either in a trait or an impl, but appears most often in trait.</p>
+<p>I hope you try this template with me, and you&apos;ll know what happened to <code>self</code>. Look at it:</p>
+<pre><code class="lang-rust"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">SomeStruct</span></span> { some_string:  };
+<span class="hljs-keyword">impl</span> SomeStruct {
+    <span class="hljs-keyword">pub</span> <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">some_function</span> </span>(&amp;<span class="hljs-keyword">self</span>) {
+        <span class="hljs-keyword">let</span> bar: &amp;SomeStruct = <span class="hljs-keyword">self</span>;
+        <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{:?}&quot;</span>, bar);
+        <span class="hljs-comment">// Correct</span>
+
+        <span class="hljs-keyword">let</span> bar: SomeStruct = <span class="hljs-keyword">self</span>;
+        <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{:?}&quot;</span>, bar);
+        <span class="hljs-comment">// With ISSUE.</span>
+    }
+}
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
+    <span class="hljs-keyword">let</span> some_var: SomeStruct = SomeStruct { some_string: <span class="hljs-string">&quot;david bowie&quot;</span>.to_string() }.
+    some_var.some_function();
+}
+</code></pre>
+<p>In the template, <code>self</code> inner <code>fn some_function</code> means <code>&amp;self</code> while the function defining.</p>
+
                                 
                                 </section>
                             
@@ -242,7 +320,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Blockchain","level":"1.2.3","depth":2,"previous":{"title":"Block","level":"1.2.2","depth":2,"path":"markdown/basquiat/block.md","ref":"markdown/basquiat/block.md","articles":[]},"dir":"neutral"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"markdown/basquiat/blockchain.md","mtime":"2018-05-27T08:06:10.140Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-05-27T09:36:29.477Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Blockchain","level":"1.2.3","depth":2,"previous":{"title":"Block","level":"1.2.2","depth":2,"path":"markdown/basquiat/block.md","ref":"markdown/basquiat/block.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"markdown/basquiat/blockchain.md","mtime":"2018-05-28T07:03:42.149Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-05-28T07:07:50.021Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>
