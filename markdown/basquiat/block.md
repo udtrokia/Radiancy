@@ -24,9 +24,9 @@ fn fn ts() -> String{}
 ```
 use mod::mod::mod
 ```
-To understand the crate in rust, I suggest to read the doc. it's easy and we can write pretty right crate soon with few mistakes.
+To understand the crate in rust, I suggest to read the doc. it's easy and we can write pretty crate soon with few mistakes.
 
-But anyway, don't forget paying attention to the mod `path`.
+But anyway, don't forget paying attention to the `mod path`.
 
 #### Method example
 
@@ -46,7 +46,7 @@ struct Block {
     hash: String
 }
 ```
-Writing out the struct is not defficult, but the use of it is difficult.
+Writing out the struct is not defficult, but the usage of it is difficult.
 
 + How to Add a Function in exist `struct?`
 
@@ -58,9 +58,9 @@ impl Block {
 }
 ```
 
-But what I want to explain more is: `struct` is not a basic types. The `content` or `field` of struct can't change after we have defined it. 
+What I want to explain more is: `struct` is not a basic types. The `content` or `field` of struct can't change after we have defined it. 
 
-What we need to learn is how to quote the value of a exsit `struct`, even change it? How about Copy a struct? There are plenty of methods waiting us to find them, the following is one of them.
+We need to learn how to borrow the value of an exsit `struct`, even change it? How about Copy a struct? There are plenty of methods waiting us to find them, the following is one of them.
 
 #### Struct Content Ownership
 
@@ -78,7 +78,7 @@ fn set_hash(self) -> Block {
 }
 ```
 
-In the file `set_hash`, we return a new struct to the variable(Type is Block). And the value of the preview struct had moved into the new struct then released. This process is a nice implement accrod the principle of rust `ownership`.
+In the file `set_hash`, we returned a new struct to the variable(Type is Block). The value of the preview struct had moved into the new struct, and then released. This process is a nice implement accrod to the principle of rust `ownership`.
 
 ```
 [Block]
@@ -86,31 +86,32 @@ In the file `set_hash`, we return a new struct to the variable(Type is Block). A
         {Block} with new_hash
 ```
 
-__the old Block Didn't changed but released.__
+__The old Block Didn't changed but released.__
 
-__the new Block inherited parts of the old with `...self`, but with a different hash.__
+__The new Block inherited parts of the old with `...self`, but with a different hash.__
 
-> You can try google, `Rust ownership`, `Rust move value`, `Rust value point` or directly the bug you meet.
+> You can google: `Rust ownership`, `Rust move value`, `Rust value point` or directly the bug you meet.
 
 #### Variable Address
 
-The last and the important. Here is an example to create a variable and change, copy, or quote it.
+The last and the important part. Here is an example to create a variable and change, copy, or borrow it.
 
 + Define a variable.
 
 ```rust
 let mut hasher = Sha256::new();
 ```
-Wait... why I added mut in the line? 
+Wait... why I added `mut` in the line? 
 
 __Here is a question of `Mutable`, `Copy`, `Clone`, `&`: what the hell with these methods?__
-> Recommend to read the docs, and I'll explain all of them in `Blockchain` field.
 
-Acutally, mut `receive` the value of right side. And give us authority to change the value at the exact internal storage.
+> Recommend reading the docs, I'll explain all of them in `Blockchain` field.
+
+Acutally, mut `receive` the value of right side. And give us authority to change the value at a exact new internal storage.
 
 ## Summary
 
 
-+ __We need to be conscious of the ownership in Rust in high-level types.__
++ __Be conscious of the `ownership` in Rust in high-level types.__
 
-+ __Methods(Copy, Clone, mut, &) can be mixed up easily, take care of them.__
++ __Methods(Copy, Clone, mut, &) might be mixed up with no intention, take care of them.__

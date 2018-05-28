@@ -41,26 +41,26 @@ pub fn new_blockchain() -> Blockchain {
 pub struct Blockchain { pub blocks: Vec<Block> }
 ```
 
-`Vector` seems like the basic type `array`, what make them different is: We don't need to define the arrays` content specificly. We can change it, expand it, even more reduce it.
+`Vector` seems like the basic type `array`, what make them different is: We don't need to define the arrays` content specificly. We can change it, expand it, even reduce it.
 
-The way we define a `Vec` is:
+The way we defining a `Vec` is:
 
 ```rust
 let x: Vec<T> = vec![..]
 ```
-+ Vec<T> means a series Vector of type `<T>` type.
++ Vec<T> means a series of Vector of type `<T>` type.
 + `vec!` is a macro to create `Vector`
 
 ## Borrow && Self
 
 #### Borrow
 
-Borrow covers a wide range of issues. This article we only introduce one aspect. If want to read the complete, I recommend you to read my independent rust notes or read the docs.
+Borrow covers a wide range of issues. In this article we only introduce __one__ aspect. If want to understand the complete, I recommend you to read my independent rust notes or read the docs.
 
 ```
 pub fn get_prev_hash(&self)
 ```
-If you remember what happened to `mut`. I think you've already knowed what does `Borrow` exactly mean. I use the value with the internal storage we have already setted. `&some_var` means `Borrow`.
+If you remember what happened to `mut`. I think you've already  grasped what does `Borrow` exactly mean. I used the value in the internal storage we have already setted. `&some_var` means `Borrow`.
 
 #### Self
 
@@ -95,4 +95,4 @@ fn main() {
 }
 ```
 
-In the template, `self` inner `fn some_function` means `&self` while the function defining.
+In this template, `self` in `fn some_function` means `&self` while the function defining.

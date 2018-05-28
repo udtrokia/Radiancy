@@ -64,12 +64,12 @@ for _block in blockchain.blocks { code };
 ```rust
 let mut blockchian: Blockchain = new_blockchain();
 ```
-This file doesn't contain a struct defination. It has the struct types uses. `Blockchain` is the name of the struct. I'll explain struct more when we meet the complex struct using in following chapters.
+This file doesn't contain a struct defination. It has the struct types usages. `Blockchain` is the name of the struct. I'll explain struct more when we meet the complex struct using in following chapters.
 
 ## Syntax
 
-We got most sentences with the end `;` but `fn main() {}` not. Rust only have two types of Syntax.
-One is `sententce` and the other is `function`. `;` means a sentence end.
+Most sentences we got has the end `;` but `fn main() {}` not. Rust only have two types of Syntax.
+One is `sententce` and the other is `function`. `;` means the end of a sentence.
 
 ## Types
 
@@ -87,6 +87,6 @@ let mut blockchian: Blockchain = new_blockchain();
 
 With the design of `Ownership`, `Variable` might be the most magic part in rust. 
 
-`let var = value` is the basic method of define a variable. Instead of `let`, we alse have `const`, `static` which have other traits you'v already know. If some part make you confused, I guess is meaning of the word `mut`.
+`let var = value` is the basic method of defining a variable. Instead of `let`, we alse have `const`, `static` which have other traits you'v already know. If some part make you confused, I guess is the meaning of the word `mut`.
 
-Rust, which is famous with the `safe-RAM` trait while it says that Rust is the biggest opponent to `C++`. Rust work on the variable `ownership` of RAM. Every we pass value, we moved the value and release the RAM. Don't worry, Rust offer lots of methods to deel with the design the same. For more information, please read the [docs](https://doc.rust-lang.org).
+Rust, which is famous with the `safe-RAM` trait while it says that Rust is The biggest competitor of `C++`. Rust work on the variable `ownership` of internal storage. Every time we pass value, we moved the value and release the internal storage. Don't worry, Rust offer lots of methods to deel with the design as the same. For more information, please read the [docs](https://doc.rust-lang.org).
