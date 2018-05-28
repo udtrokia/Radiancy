@@ -69,7 +69,7 @@ This file doesn't contain a struct defination. It has the struct types usages. `
 ## Syntax
 
 Most sentences we got has the end `;` but `fn main() {}` not. Rust only have two types of Syntax.
-One is `sententce` and the other is `function`. `;` means the end of a sentence.
+One is `sententce` and the other is `expression`. `;` means the end of a sentence.
 
 ## Types
 
