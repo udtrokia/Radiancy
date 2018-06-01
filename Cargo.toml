@@ -4,6 +4,7 @@ version = "0.1.0"
 authors = ["mercury <udtrokia@163.com>"]
 
 [dependencies]
-bytes = "0.4"
+#bytes = "0.4"
+num-bigint = "0.2"
 rust-crypto = "^0.2"
 colored = "1.6"
