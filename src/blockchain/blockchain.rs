@@ -10,14 +10,14 @@ use blockchain::block::{
 pub struct Blockchain { pub blocks: Vec<Block> } 
 
 impl Blockchain {
-    pub fn get_prev_hash(&self) -> String {
+    pub fn get_prev_hash(&self) -> Vec<u8> {
         let prev_block: &Block = &self.blocks[self.blocks.len() -1];
-        let prev_hash: String = (&prev_block.hash).to_string();
+        let prev_hash: Vec<u8> = prev_block.hash.to_vec();
         return prev_hash;
     }
     pub fn add_block(mut self, data: String) -> Blockchain {
-        let _prev_hash: String = self.get_prev_hash();
-        let _new_block: Block = new_block(data, String::from(_prev_hash));
+        let _prev_hash: Vec<u8> = self.get_prev_hash();
+        let _new_block: Block = new_block(data, _prev_hash);
 
         self.blocks.push(_new_block);
         return Blockchain {
