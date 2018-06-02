@@ -58,7 +58,7 @@ impl ProofOfWork {
         _hash_int = BigInt::from_bytes_be(Sign::Plus, &_hash.into_bytes());
         
         let is_vaild:bool = _hash_int.eq(&self.target);
-        return is_vaild;
+        return !is_vaild;
     }
 }
 
