@@ -39,12 +39,15 @@ impl ProofOfWork {
         let mut hasher:Sha256;
         let mut nonce:i32 = 0;
 
+        println!("\nMinning start... `num` crate is really slow, please have patient :\\");
         while nonce < i32::max_value() {
             let data = self.clone().prepare_data(nonce);
             hasher = Sha256::default();
             hasher.input(&data);
-            hash_int = BigInt::from_bytes_be(Sign::Plus, &hasher.result());
+            hash_int = BigInt::from_bytes_be(Sign::Plus, &hasher.clone().result());
             if hash_int.cmp(&self.target) == Ordering::Less {
+                println!("Mining out block: {:x}", &hasher.result());
+                println!("Data: {:?}", String::from_utf8(self.block.data).unwrap());
                 break;
             } else {
                 nonce += 1;

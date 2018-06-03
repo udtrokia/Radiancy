@@ -10,7 +10,7 @@ The drawing, Untitled (Charles Darwin), 1983 by the late Jean-Michel Basquiat in
 + [Block](/markdown/basquiat/block.md)
 + [Blockchain](/markdown/basquiat/blockchain.md)
 
-### Realase Code
+### Release Code
 
 + One file version - [v0.0.5](https://github.com/udtrokia/Radiancy/releases/tag/v0.0.5)
-+ Stable version - [v0.0.6](https://github.com/udtrokia/Radiancy/releases/tag/v0.0.6)
++ Stable version - [v0.0.7](https://github.com/udtrokia/Radiancy/releases/tag/v0.0.7)
