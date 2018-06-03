@@ -4,7 +4,8 @@ version = "0.1.0"
 authors = ["mercury <udtrokia@163.com>"]
 
 [dependencies]
-#bytes = "0.4"
-num-bigint = "0.2"
-rust-crypto = "^0.2"
+byteorder = "1.2.3"
 colored = "1.6"
+num-bigint = "0.2"
+sha2 = "0.7.1"
+hex = "0.3.2"

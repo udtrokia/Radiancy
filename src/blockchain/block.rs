@@ -3,10 +3,10 @@
   ** /radiancy/src/blockchain/block.rs
  * 
  */
-extern crate crypto;
+//pub extern crate byteorder;
 
-pub use self::crypto::sha2::Sha256;
-pub use self::crypto::digest::Digest;
+//use self::byteorder::{LittleEndian, WriteBytesExt};
+//use std::mem;
 use std::time::{SystemTime, UNIX_EPOCH};
 use pow::pow::new_proof_of_work;
     
@@ -17,21 +17,6 @@ pub struct Block {
     pub prev_block_hash: Vec<u8>,
     pub hash: Vec<u8>,
     pub nonce: i32
-}
-
-impl Block {
-//    fn set_hash(self) -> Block {
-//        let mut hasher = Sha256::new();
-//        let header = String::new()
-//            + &String::from_utf8(self.timestamp.clone()).unwrap()
-//            + &String::from_utf8(self.data.clone()).unwrap()
-//            + &String::from_utf8(self.prev_block_hash.clone()).unwrap();
-//        hasher.input_str(&header);
-//        return Block {
-//            hash: hasher.result_str().into_bytes(),
-//            ..self
-//        }
-//    }
 }
 
 pub fn new_block(data: String, prev_block_hash: Vec<u8>) -> Block {
@@ -51,8 +36,6 @@ pub fn new_block(data: String, prev_block_hash: Vec<u8>) -> Block {
         .._pow.block
     };
     return _block;
-    // block.set_hash()
-
 }
 
 pub fn new_genesis_block() -> Block {
@@ -65,5 +48,9 @@ pub fn ts() -> Vec<u8> {
         .expect("HaHa, Time went backwards!");
     let in_ms = since_the_epoch.as_secs() * 1000 +
         since_the_epoch.subsec_nanos() as u64 / 1_000_000;
+
+    //let mut bs = [0u8; mem::size_of::<u64>()];
+    //bs.as_mut().write_u64::<LittleEndian>(in_ms).expect("Unable to write");
+
     return in_ms.to_string().into_bytes();
 }
