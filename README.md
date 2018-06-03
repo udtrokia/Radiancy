@@ -10,8 +10,8 @@
 
 ## [Chapter 2 - Andy - Workable Blockchain](/markdown/andy/README.md)
 
-+ Stable version - [v0.0.9][3]
++ Stable version - [v0.0.10][3]
 
 [1]:https://github.com/udtrokia/Radiancy/releases/tag/v0.0.5
 [2]:https://github.com/udtrokia/Radiancy/releases/tag/v0.0.6
-[3]:https://github.com/udtrokia/Radiancy/releases/tag/v0.0.9
+[3]:https://github.com/udtrokia/Radiancy/releases/tag/v0.0.10

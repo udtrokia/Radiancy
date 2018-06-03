@@ -6,5 +6,5 @@ In January 1984—as the entire Western World is well aware—Apple unveiled the
 
 ### Release Code
 
-+ [v0.0.9](https://github.com/udtrokia/Radiancy/release/tag/v0.0.9)
++ [v0.0.10](https://github.com/udtrokia/Radiancy/release/tag/v0.0.10)
 

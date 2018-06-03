@@ -5,14 +5,11 @@
  */
 extern crate num_bigint;
 extern crate sha2;
-extern crate hex;
 
 pub use self::num_bigint::{BigInt, Sign};
 use self::sha2::{Sha256, Digest};
-//use blockchain::block::byteorder::{LittleEndian, WriteBytesExt};
 use blockchain::block::Block;
 use std::cmp::Ordering;
-//use std::mem;
 use std::ops::Shl;
 
 
@@ -24,8 +21,6 @@ pub struct ProofOfWork {
 
 impl ProofOfWork {
     pub fn prepare_data(self, nonce:i32) -> Vec<u8> {
-        //let mut _nonce = [0u8; mem::size_of::<i32>()];
-        //_nonce.as_mut().write_i32::<LittleEndian>(nonce).expect("Unable to write");
         let mut data_camp:Vec<u8> = self.block.timestamp.clone();
         data_camp.append(&mut self.block.data.clone());
         data_camp.append(&mut self.block.prev_block_hash.clone());
@@ -39,15 +34,18 @@ impl ProofOfWork {
         let mut hasher:Sha256;
         let mut nonce:i32 = 0;
 
-        println!("\nMinning start... `num` crate is really slow, please have patient :\\");
+        println!("\n`num` crate is really slow, please have patient :\\");
+        println!("I've setted the difficulty lowest. in my mbp, it's about 10mins...");
+        println!("But, don't worry, I'll replace the PoW module soon.\n");
+        println!("Mining the block containing: {:?}",
+                 String::from_utf8(self.clone().block.data).unwrap());        
         while nonce < i32::max_value() {
             let data = self.clone().prepare_data(nonce);
             hasher = Sha256::default();
             hasher.input(&data);
             hash_int = BigInt::from_bytes_be(Sign::Plus, &hasher.clone().result());
             if hash_int.cmp(&self.target) == Ordering::Less {
-                println!("Mining out block: {:x}", &hasher.result());
-                println!("Data: {:?}", String::from_utf8(self.block.data).unwrap());
+                println!("Mining out block: {:x}", &hasher.result());            
                 break;
             } else {
                 nonce += 1;
