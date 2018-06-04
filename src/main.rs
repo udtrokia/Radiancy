@@ -1,21 +1,22 @@
 /*****
- *
- ** udtrokia<udtrokia@gmail.com>
- * 
-*/
+  *
+  ** udtrokia<udtrokia@gmail.com>
+  * 
+ */
 extern crate colored; 
 extern crate radiancy; 
 
 use colored::*; 
 use radiancy::blockchain::blockchain::{ Blockchain, new_blockchain };
 use radiancy::pow::pow::new_proof_of_work;
-use radiancy::pow::pow::{BigInt, Sign};
+use radiancy::num_bigint::{BigInt, Sign};
 
 fn main() {
     let mut blockchain: Blockchain = new_blockchain();
     blockchain = blockchain.add_block(String::from("This is Major Tom to Ground Control."));
     blockchain = blockchain.add_block(String::from("I am stepping through the door."));
     for _block in blockchain.blocks {
+        // use pow;
         let pow = new_proof_of_work(_block.clone(), 0);
         println!("\nPrev. hash: {:x}", BigInt::from_bytes_be(Sign::Plus, &_block.prev_block_hash));
 	println!("Data: {}", String::from_utf8(_block.data.to_vec()).unwrap().magenta());

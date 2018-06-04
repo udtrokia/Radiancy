@@ -3,11 +3,9 @@
   ** /radiancy/src/pow/pow.rs
   *
  */
-extern crate num_bigint;
-extern crate sha2;
 
-pub use self::num_bigint::{BigInt, Sign};
-use self::sha2::{Sha256, Digest};
+use num_bigint::{BigInt, Sign};
+use sha2::{Sha256, Digest};
 use blockchain::block::Block;
 use std::cmp::Ordering;
 use std::ops::Shl;
@@ -29,7 +27,7 @@ impl ProofOfWork {
         return data_camp.to_vec();
     }
 
-    pub fn run(self) -> (i32, Vec<u8>) {
+    pub fn run(self) -> (Vec<u8>, Vec<u8>) {
         let mut hash_int:BigInt = BigInt::from(1);
         let mut hasher:Sha256;
         let mut nonce:i32 = 0;
@@ -51,12 +49,18 @@ impl ProofOfWork {
                 nonce += 1;
             }
         } 
-        return (nonce, hash_int.to_bytes_be().1);
+        return (nonce.to_string().into_bytes(), hash_int.to_bytes_be().1);
     }
 
     pub fn validate(self) -> bool {
         let _hash_int: BigInt;
-        let mut _data = self.clone().prepare_data(self.clone().block.nonce);
+        let mut _data = self.clone().prepare_data(
+            i32::from_str_radix(
+                &String::from_utf8(
+                    self.clone().block.nonce
+                ).unwrap(),
+                16).unwrap()
+        );
         let mut _hasher = Sha256::default();
         _hasher.input(&_data);
         _hash_int = BigInt::from_bytes_be(Sign::Plus, &_hasher.result());

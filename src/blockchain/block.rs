@@ -3,21 +3,30 @@
   ** /radiancy/src/blockchain/block.rs
  * 
  */
-//pub extern crate byteorder;
 
-//use self::byteorder::{LittleEndian, WriteBytesExt};
-//use std::mem;
 use std::time::{SystemTime, UNIX_EPOCH};
 use pow::pow::new_proof_of_work;
-    
-#[derive(Clone)]
+//use bincode::{serialize, deserialize};
+
+#[derive(Clone, Serialize, Deserialize, Debug)]
 pub struct Block {
     pub timestamp: Vec<u8>,
     pub data: Vec<u8>,
     pub prev_block_hash: Vec<u8>,
     pub hash: Vec<u8>,
-    pub nonce: i32
+    pub nonce: Vec<u8>
 }
+
+//impl Block {
+//    fn serialize (self) -> Vec<u8> {
+//        let encode:Vec<u8> = serialize(&self).unwrap();
+//        return encode;
+//    }
+//    fn deserialize_block(self, data: Vec<u8>) -> Block {
+//        let decode:Block = deserialize(&data).unwrap();
+//        return decode;
+//    }
+//}
 
 pub fn new_block(data: String, prev_block_hash: Vec<u8>) -> Block {
     let block:Block = Block {
@@ -25,7 +34,7 @@ pub fn new_block(data: String, prev_block_hash: Vec<u8>) -> Block {
         data: data.into_bytes(),
         prev_block_hash: prev_block_hash,
         hash: Vec::new(),
-        nonce: i32::min_value()
+        nonce: Vec::new()
     };
     
     let _pow = new_proof_of_work(block, 24);
@@ -48,9 +57,6 @@ pub fn ts() -> Vec<u8> {
         .expect("HaHa, Time went backwards!");
     let in_ms = since_the_epoch.as_secs() * 1000 +
         since_the_epoch.subsec_nanos() as u64 / 1_000_000;
-
-    //let mut bs = [0u8; mem::size_of::<u64>()];
-    //bs.as_mut().write_u64::<LittleEndian>(in_ms).expect("Unable to write");
 
     return in_ms.to_string().into_bytes();
 }
