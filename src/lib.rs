@@ -10,6 +10,7 @@ pub extern crate serde;
 pub mod blockchain {
     pub mod block;
     pub mod blockchain;
+    pub mod iterator;
 }
 
 pub mod pow {

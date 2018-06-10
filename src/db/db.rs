@@ -1,4 +1,4 @@
-use sled::{ ConfigBuilder, Tree };
+pub use sled::{ ConfigBuilder, Tree };
 
 pub fn db () -> Tree {
     let config = ConfigBuilder::new()

@@ -6,7 +6,7 @@
 
 use std::time::{SystemTime, UNIX_EPOCH};
 use pow::pow::new_proof_of_work;
-//use bincode::{serialize, deserialize};
+use bincode::{serialize, deserialize};
 
 #[derive(Clone, Serialize, Deserialize, Debug)]
 pub struct Block {
@@ -17,16 +17,17 @@ pub struct Block {
     pub nonce: Vec<u8>
 }
 
-//impl Block {
-//    fn serialize (self) -> Vec<u8> {
-//        let encode:Vec<u8> = serialize(&self).unwrap();
-//        return encode;
-//    }
-//    fn deserialize_block(self, data: Vec<u8>) -> Block {
-//        let decode:Block = deserialize(&data).unwrap();
-//        return decode;
-//    }
-//}
+impl Block {
+    pub fn serialize (self) -> Vec<u8> {
+        let encode:Vec<u8> = serialize(&self).unwrap();
+        return encode;
+    }
+}
+
+pub fn deserialize_block(data: Vec<u8>) -> Block {
+    let decode:Block = deserialize(&data).unwrap();
+    return decode;
+}
 
 pub fn new_block(data: String, prev_block_hash: Vec<u8>) -> Block {
     let block:Block = Block {
