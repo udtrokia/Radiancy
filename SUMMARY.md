@@ -6,3 +6,4 @@
   * [Block](/markdown/basquiat/block.md)
   * [Blockchain](/markdown/basquiat/blockchain.md)  
 * [Andy - Workable Blockchain](/markdown/andy/README.md)
+* [Bruno - Persistent Blockchain](/markdown/bruno/README.md)
