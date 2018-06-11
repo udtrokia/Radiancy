@@ -17,21 +17,6 @@ pub struct Blockchain {
 }
 
 impl Blockchain {
-    //pub fn get_prev_hash(&self) -> Vec<u8> {
-    //    let prev_block: &Block = &self.blocks[self.blocks.len() -1];
-    //    let prev_hash: Vec<u8> = prev_block.hash.to_vec();
-    //    return prev_hash;
-    //}
-    //pub fn add_block(mut self, data: String) -> Blockchain {
-    //    let _prev_hash: Vec<u8> = self.get_prev_hash();
-    //    let _new_block: Block = new_block(data, _prev_hash);
-    //    
-    //    self.blocks.push(_new_block.clone());
-    //    return Blockchain {
-    //        blocks: self.blocks,
-    //        tip: _new_block.hash
-    //    };
-    //}
     pub fn add_block(self, data:String) {
         let _db = db();
         let last_hash: Vec<u8> = self.clone()
@@ -46,10 +31,11 @@ impl Blockchain {
 
     }
     pub fn iterator(self) -> BlockchainIterator {
-        return BlockchainIterator {
+        let bci = BlockchainIterator {
             current_hash: self.clone().tip,
             db: self.db
         };
+        return bci;
     }
 }
 
@@ -66,7 +52,7 @@ pub fn new_blockchain() -> Blockchain {
         let _store_hash = _db.set(genesis.clone().hash, genesis.clone().serialize());
         if _store_hash.is_ok() == false { panic!(_store_hash.unwrap())}
         let _store_last = _db.set("last".to_string().into_bytes(), genesis.clone().hash);
-        if _store_last.is_ok() == false { panic!(_store_last.unwrap())}        
+        if _store_last.is_ok() == false { panic!(_store_last.unwrap())}
         tip = genesis.hash;
     } else {
         tip = _db.get(&"last".to_string().into_bytes()).unwrap().unwrap().to_vec();

@@ -38,7 +38,7 @@ pub fn new_block(data: String, prev_block_hash: Vec<u8>) -> Block {
         nonce: Vec::new()
     };
     
-    let _pow = new_proof_of_work(block, 24);
+    let _pow = new_proof_of_work(block, 0);
     let (_nonce, _hash) = _pow.clone().run();
     let _block:Block = Block {
         hash: _hash,
