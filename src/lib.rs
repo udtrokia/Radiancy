@@ -1,3 +1,4 @@
+pub extern crate args;
 pub extern crate bincode;
 pub extern crate num_bigint;
 pub extern crate sled;
@@ -19,4 +20,8 @@ pub mod pow {
 
 pub mod db {
     pub mod db;
+}
+
+pub mod cli {
+    pub mod cli;
 }
