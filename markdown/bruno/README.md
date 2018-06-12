@@ -1,4 +1,4 @@
-# Bruno - Persistent Blockchain
+# Bruno - Presistent Blockchain
 
 ![Lores](/assets/Bruno.png)
 
