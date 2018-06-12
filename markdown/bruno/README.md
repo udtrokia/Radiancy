@@ -1,4 +1,4 @@
-# Andy - Workable Blockchain
+# Bruno - Persistent Blockchain
 
 ![Lores](/assets/Bruno.png)
 

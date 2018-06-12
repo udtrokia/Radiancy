@@ -10,20 +10,25 @@ pub struct CLI {
 
 impl CLI {
     pub fn run(self) {
+        match env::args().nth(1) {
+            Some(_) => {},
+            None => { self.help(); return;}
+        }
         let _arg = env::args().nth(1).unwrap();
         match _arg.as_str() {
-            "help" => {
-                println!("\nUsage: radiancy COMMAND;");
-                println!("\n<--Yellow Brick Road-->");
-                println!("\nCOMMANDS:");
-                println!("    add        Add block to Radiancy;");
-                println!("    print      Print blocks in Radiancy;");
-                println!("");
-            },
+            "help" => { self.help(); },
             "add" => { self.add_block(); },
             "print" => { self.print_chain(); },
             _ => println!("no match"),
         }
+    }
+    pub fn help(self) {
+        println!("\nUsage: radiancy COMMAND;");
+        println!("\n<--Yellow Brick Road-->");
+        println!("\nCOMMANDS:");
+        println!("    add        Add block to Radiancy;");
+        println!("    print      Print blocks in Radiancy;");
+        println!("");
     }
     pub fn add_block(self) {
         let _data = env::args().nth(2).unwrap();

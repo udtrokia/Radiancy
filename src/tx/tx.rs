@@ -1,4 +1,5 @@
 // Tx
+#[test]
 use bincode::serialize;
 
 #[derive(Clone, Serialize, Deserialize, Debug)]
@@ -8,17 +9,19 @@ struct Transaction {
     vout: Vec<u8>, //TXOutput,
 }
 
+#[derive(Clone, Serialize, Deserialize, Debug)]
 struct TXOutput {
     value: i32,
     script_pubkey: String
 }
-
+#[derive(Clone, Serialize, Deserialize, Debug)]
 struct TXInput {
     txid: Vec<u8>,
     vout: i32,
     script_sig: String
 }
 
+#[test]
 fn new_coinbase_tx(to: String, mut data: String) -> Transaction {
     if data == "".to_string() {
         data = "Reward to ".to_string() + &to
