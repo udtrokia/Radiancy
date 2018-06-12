@@ -25,3 +25,7 @@ pub mod db {
 pub mod cli {
     pub mod cli;
 }
+
+pub mod tx {
+    pub mod tx;
+}
