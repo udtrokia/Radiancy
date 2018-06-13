@@ -1,10 +1,9 @@
 // Tx
-#[test]
 use bincode::serialize;
-
+    
 #[derive(Clone, Serialize, Deserialize, Debug)]
-struct Transaction {
-    id: Vec<u8>,
+pub struct Transaction {
+    pub id: Vec<u8>,
     vin: Vec<u8>, //TXInput,
     vout: Vec<u8>, //TXOutput,
 }
@@ -21,10 +20,22 @@ struct TXInput {
     script_sig: String
 }
 
-#[test]
-fn new_coinbase_tx(to: String, mut data: String) -> Transaction {
+impl TXInput {
+    pub fn can_unlock_output_with(self, unlocking_data: String) -> bool {
+        return self.script_sig == unlocking_data;
+    }
+}
+
+impl TXOutput {
+    pub fn can_be_unlocked_with(self, unlocking_data: String) -> bool {
+        return self.script_pubkey == unlocking_data;
+    }
+}
+
+
+pub fn new_coinbase_tx(to: String, mut data: String) -> Transaction {
     if data == "".to_string() {
-        data = "Reward to ".to_string() + &to
+        data = "Reward to ".to_string() + &to;
     }
     let subsidy = 1;
     let txin = TXInput {
@@ -44,3 +55,4 @@ fn new_coinbase_tx(to: String, mut data: String) -> Transaction {
 
     return tx;
 }
+
