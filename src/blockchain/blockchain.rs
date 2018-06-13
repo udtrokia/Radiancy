@@ -3,13 +3,12 @@
  ** /radiancy/src/blockchain/blockchain.rs
  * 
 */
-use blockchain::block::{
-    Block, new_block, new_genesis_block
-};
+use blockchain::block::{ Block, new_genesis_block };
 use blockchain::iterator::{ Iterator as BlockchainIterator};
 use db::db::{Tree, db};
 use sled::{ Iter };
-use tx::tx::new_coinbase_tx;
+use tx::tx::{Transaction, new_coinbase_tx};
+use std::collections::HashMap;
 
 #[derive(Clone)]
 pub struct Blockchain {
@@ -17,20 +16,11 @@ pub struct Blockchain {
     db: Tree
 }
 
+struct TXO_Pair {
+    String: Vec<i32>,
+}
+
 impl Blockchain {
-    //pub fn add_block(self, data:String) {
-    //    let _db = db();
-    //    let last_hash: Vec<u8> = self.clone()
-    //        .db.get(&"last".to_string().into_bytes()).unwrap().unwrap();
-    //
-    //    let new_block: Block = new_block(data, last_hash);
-    //
-    //    let _set_hash = self.db.set(new_block.clone().hash, new_block.clone().serialize());
-    //    if _set_hash.is_ok() == false { panic!(_set_hash.unwrap()) };
-    //    let _set_last = self.db.set("last".to_string().into_bytes(), new_block.clone().hash);
-    //    if _set_last.is_ok() == false { panic!(_set_last.unwrap()) };
-    //
-    //}
     pub fn iterator(self) -> BlockchainIterator {
         let bci = BlockchainIterator {
             current_hash: self.clone().tip,
@@ -38,6 +28,28 @@ impl Blockchain {
         };
         return bci;
     }
+    pub fn find_unspent_transactions(self, address: String) -> Vec<Transaction>{
+        // unspentTXs
+        // spentTXOs
+        let spent_TXOs: HashMap<String, Vec<i32>> = HashMap::new();
+        let bci: BlockchainIterator = self.iterator();
+        loop {
+            let (_new_bci, _block) = bci.clone().next();
+            for tx in _block.transactions {
+                let tx_id = String::from_utf8(tx.id).unwrap();
+                // this place, iter().enumerate().ls
+                'outputs: for (out_idx, out) in tx.vout.iter().enumerate() {
+                    if spent_TXOs.clone()[&tx_id] != vec![] {
+                        for spent_out in &spent_TXOs[&tx_id] {
+                            if spent_out == &(out_idx as i32) {
+                                continue 'outputs;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }    
 }
 
 //sled::DbResult
