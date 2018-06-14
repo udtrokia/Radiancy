@@ -27,6 +27,7 @@ impl CLI {
         println!("\n<--Yellow Brick Road-->");
         println!("\nCOMMANDS:");
         println!("    add        Add block to Radiancy;");
+        println!("    address    Genesis Coin to address;");
         println!("    print      Print blocks in Radiancy;");
         println!("");
     }
@@ -39,15 +40,15 @@ impl CLI {
         loop {
             let (_new_bci, _block) = _bci.clone().next();
             _bci = _new_bci;
-
+            
             println!("\nPrev. hash: {:x}", BigInt::from_bytes_be(Sign::Plus,&_block.prev_block_hash));
             println!("Hash: {:x}", BigInt::from_bytes_be(Sign::Plus, &_block.hash));
             println!("Time: {}", String::from_utf8(_block.clone().timestamp).unwrap());
             let pow = new_proof_of_work(_block.clone(), 0);
             println!("PoW:  {}\n", pow.validate().to_string());
             if _block.prev_block_hash == vec![] {
-                println!(" <-- Complete! --> ");
-                break;
+            println!(" <-- Complete! --> ");
+            break;
             };
         }; 
     }
