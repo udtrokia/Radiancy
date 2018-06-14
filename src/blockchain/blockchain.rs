@@ -16,10 +16,6 @@ pub struct Blockchain {
     db: Tree
 }
 
-struct TXO_Pair {
-    String: Vec<i32>,
-}
-
 impl Blockchain {
     pub fn iterator(self) -> BlockchainIterator {
         let bci = BlockchainIterator {
@@ -29,30 +25,45 @@ impl Blockchain {
         return bci;
     }
     pub fn find_unspent_transactions(self, address: String) -> Vec<Transaction>{
-        // unspentTXs
-        // spentTXOs
-        let spent_TXOs: HashMap<String, Vec<i32>> = HashMap::new();
-        let bci: BlockchainIterator = self.iterator();
+        let mut unspent_txs: Vec<Transaction> = vec![];
+        let mut spent_txos: HashMap<String, Vec<i32>> = HashMap::new();
+        let bci: BlockchainIterator = self.iterator(); 
         loop {
             let (_new_bci, _block) = bci.clone().next();
             for tx in _block.transactions {
-                let tx_id = String::from_utf8(tx.id).unwrap();
-                // this place, iter().enumerate().ls
-                'outputs: for (out_idx, out) in tx.vout.iter().enumerate() {
-                    if spent_TXOs.clone()[&tx_id] != vec![] {
-                        for spent_out in &spent_TXOs[&tx_id] {
+                let tx_id = String::from_utf8(tx.clone().id).unwrap();
+                'outputs: for (out_idx, out) in tx.clone().vout.iter().enumerate() {
+                    if spent_txos.clone()[&tx_id] != vec![] {
+                        for spent_out in &spent_txos[&tx_id] {
                             if spent_out == &(out_idx as i32) {
                                 continue 'outputs;
                             }
                         }
                     }
+                    if out.to_owned().can_be_unlocked_with(address.to_owned()) {
+                        unspent_txs.append(&mut vec![tx.clone()]);
+                    }
+                }
+                if tx.clone().is_coinbase() == false {
+                    for _vin in tx.vin {
+                        if _vin.clone().can_unlock_output_with(address.to_owned()) {
+                            let in_txid = String::from_utf8(_vin.txid).unwrap();
+                            let mut _trans: Vec<i32> = spent_txos.get(&in_txid).unwrap().to_owned();
+                            _trans.append(&mut vec![_vin.vout]);
+                            spent_txos.remove(&in_txid);
+                            spent_txos.insert(in_txid, _trans.to_vec());
+                        }
+                    }
                 }
             }
+            if _block.prev_block_hash.len() == 0 {
+                break;
+            }            
         }
-    }    
+        return unspent_txs;
+    }
 }
 
-//sled::DbResult
 pub fn new_blockchain(address:String) -> Blockchain {
     let _db = db();
     let _dbc = db().clone();

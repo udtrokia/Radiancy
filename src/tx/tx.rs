@@ -8,6 +8,16 @@ pub struct Transaction {
     pub vout: Vec<TXOutput>, //TXOutput,
 }
 
+impl Transaction {
+    pub fn is_coinbase(self) -> bool {
+        if self.id == vec![] {
+            return true;
+        }else{
+            return false;
+        }
+    }
+}
+
 #[derive(Clone, Serialize, Deserialize, Debug)]
 pub struct TXOutput {
     value: i32,
@@ -15,8 +25,8 @@ pub struct TXOutput {
 }
 #[derive(Clone, Serialize, Deserialize, Debug)]
 pub struct TXInput {
-    txid: Vec<u8>,
-    vout: i32,
+    pub txid: Vec<u8>,
+    pub vout: i32,
     script_sig: String
 }
 
@@ -31,7 +41,6 @@ impl TXOutput {
         return self.script_pubkey == unlocking_data;
     }
 }
-
 
 pub fn new_coinbase_tx(to: String, mut data: String) -> Transaction {
     if data == "".to_string() {
