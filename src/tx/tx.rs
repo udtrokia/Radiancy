@@ -21,13 +21,13 @@ impl Transaction {
 #[derive(Clone, Serialize, Deserialize, Debug)]
 pub struct TXOutput {
     pub value: i32,
-    script_pubkey: String // just address now
+    pub script_pubkey: String // just address now
 }
 #[derive(Clone, Serialize, Deserialize, Debug)]
 pub struct TXInput {
     pub txid: Vec<u8>,
     pub vout: i32,
-    script_sig: String // just address now
+    pub script_sig: String // just address now
 }
 
 impl TXInput {

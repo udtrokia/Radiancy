@@ -3,11 +3,12 @@
  ** /radiancy/src/blockchain/blockchain.rs
  * 
 */
-use blockchain::block::{ Block, new_genesis_block };
+
+use blockchain::block::{ Block, new_genesis_block, new_block };
 use blockchain::iterator::{ Iterator as BlockchainIterator};
 use db::db::{Tree, db};
 use sled::{ Iter };
-use tx::tx::{Transaction, new_coinbase_tx, TXOutput};
+use tx::tx::{Transaction, TXOutput, TXInput, new_coinbase_tx};
 use std::collections::HashMap;
 
 #[derive(Clone)]
@@ -107,7 +108,8 @@ impl Blockchain {
 
     pub fn find_utxo(self, address: String) -> Vec<TXOutput> {
         let mut utxos: Vec<TXOutput> = vec![];
-        let unspent_transactions: Vec<Transaction> = self.find_unspent_transactions(address.to_owned());
+        let unspent_transactions: Vec<Transaction>
+            = self.find_unspent_transactions(address.to_owned());
         for tx in unspent_transactions {
             for out in tx.vout {
                 if out.to_owned().can_be_unlocked_with(address.to_owned()){
@@ -116,6 +118,51 @@ impl Blockchain {
             }
         }
         return utxos;
+    }
+    
+    pub fn find_spendable_outputs(self, address: String, _amount: i32) -> (i32, HashMap<String, Vec<i32>>) {
+        let mut _unspent_outputs:HashMap<String, Vec<i32>> = HashMap::new();
+        let _unspent_txs = self.find_unspent_transactions(address.to_owned());
+        let mut _accumulated = 0;
+        for tx in _unspent_txs {
+            let in_txid = String::from_utf8(tx.clone().id).unwrap();
+            'work: for (_out_idx, out) in tx.clone().vout.iter().enumerate() {
+                // _out_idx again....
+                // is it alignment number?
+                if out.clone().can_be_unlocked_with(address.to_owned()) && _accumulated < _amount {
+                    _accumulated = _accumulated + out.value;
+                    let mut _trans = _unspent_outputs.get(&in_txid).unwrap().to_owned();
+                    _trans.append(&mut vec![(_out_idx as i32)]);
+                    _unspent_outputs.remove(&in_txid);
+                    _unspent_outputs.insert(in_txid.to_owned(), _trans);
+
+                    if _accumulated >= _amount {
+                        break 'work;
+                    }
+                }
+            }
+        }
+        return (_accumulated, _unspent_outputs);
+    }
+
+    pub fn mine_block(self, transactions: Vec<Transaction>) {
+        let _db = db();
+        let last_hash: Vec<u8> = self.clone()
+            .db.get(&"last".to_string().into_bytes()).unwrap().unwrap();
+
+        let new_block: Block = new_block(transactions, last_hash);
+
+        let _set_hash = self.db.set(new_block.clone().hash, new_block.clone().serialize());
+        if _set_hash.is_ok() == false { panic!(_set_hash.unwrap()) };
+        let _set_last = self.db.set("last".to_string().into_bytes(), new_block.clone().hash);
+        if _set_last.is_ok() == false { panic!(_set_last.unwrap()) };
+    }
+    
+    pub fn send(_from: String, _to: String, _amount: i32) {
+        let _bc = new_blockchain(_from.to_owned());
+        let _tx = new_utxo_transaction(_from, _to, _amount, _bc.to_owned());
+        _bc.mine_block(vec![_tx]);
+        println!("Success!");
     }
 }
 
@@ -145,4 +192,40 @@ pub fn new_blockchain(address:String) -> Blockchain {
         tip: tip
     };
     return _new_blockchain;
+}
+
+pub fn new_utxo_transaction(_from: String, _to: String, _amount: i32, _bc: Blockchain) -> Transaction {
+    let mut _inputs: Vec<TXInput> = vec![];
+    let mut _outputs: Vec<TXOutput> = vec![];
+    let (_acc, _valid_outputs) = _bc.find_spendable_outputs(_from.to_owned(), _amount);
+
+    if _acc < _amount {
+        println!("\nERROR: Not enough funds");
+    }
+
+    for (_txid, _outs) in _valid_outputs.clone().iter() {
+        let _tx_id = _txid.to_owned().into_bytes();
+        
+        for out in _outs {
+            let _input = TXInput{
+                txid: _tx_id.to_owned(),
+                vout: out.to_owned(),
+                script_sig: _from.to_owned()
+            };
+            _inputs.append(&mut vec![_input]);
+        }
+    }
+
+    _outputs.append(&mut vec![TXOutput{
+        value: _acc - _amount,
+        script_pubkey: _from
+    }]);
+
+    let _tx = Transaction{
+        id: vec![],
+        vin: _inputs,
+        vout: _outputs,
+    };
+    
+    return _tx;
 }
