@@ -3,7 +3,6 @@ use blockchain::blockchain::{Blockchain, new_blockchain};
 use pow::pow::{new_proof_of_work};
 use num_bigint::{BigInt, Sign};
 
-
 pub struct CLI {
     pub blockchain: Blockchain
 }
@@ -16,8 +15,9 @@ impl CLI {
         }
         let _arg = env::args().nth(1).unwrap();
         match _arg.as_str() {
-            "address" => {self.create(); }
+            "address" => {self.create(); },
             "help" => { self.help(); },
+            "get_balance" => { self.get_balance(); },
             "print" => { self.print_chain(); },
             _ => println!("no match"),
         }
@@ -26,9 +26,9 @@ impl CLI {
         println!("\nUsage: radiancy COMMAND;");
         println!("\n<--Yellow Brick Road-->");
         println!("\nCOMMANDS:");
-        println!("    add        Add block to Radiancy;");
-        println!("    address    Genesis Coin to address;");
-        println!("    print      Print blocks in Radiancy;");
+        println!("    address        Genesis Coin to address;");
+        println!("    get_balance    Get address balance;");        
+        println!("    print          Print blocks in Radiancy;");
         println!("");
     }
     pub fn create(self){
@@ -51,5 +51,18 @@ impl CLI {
             break;
             };
         }; 
+    }
+    pub fn get_balance(self) {
+        let address = env::args().nth(2).unwrap().to_string();
+        let _bc = new_blockchain(address.to_owned());
+
+        let mut balance = 0;
+        let utxos = _bc.find_utxo(address.to_owned());
+        //
+        //for out in utxos {
+        //    balance = balance + &out.value;
+        //}
+        //
+        //println!("Balance of {:?}: {:?}", address, balance);
     }
 }

@@ -7,7 +7,7 @@ use blockchain::block::{ Block, new_genesis_block };
 use blockchain::iterator::{ Iterator as BlockchainIterator};
 use db::db::{Tree, db};
 use sled::{ Iter };
-use tx::tx::{Transaction, new_coinbase_tx};
+use tx::tx::{Transaction, new_coinbase_tx, TXOutput};
 use std::collections::HashMap;
 
 #[derive(Clone)]
@@ -36,59 +36,88 @@ impl Blockchain {
             let (_new_bci, _block) = bci.clone().next();
             // blockchain iterator.
             for tx in _block.transactions {
-                // transaction iterator. 
+                // transaction iterator.
                 
                 let tx_id = String::from_utf8(tx.clone().id).unwrap();
-                // transaction id
+                // transaction id.
                 
                 'outputs: for (out_idx, out) in tx.clone().vout.iter().enumerate() {
+                    // what is out_idx exactly.
                     // tx.vout{value(subsidy), script_pubkey(to)} iterator.
                     
                     if spent_txos[&tx_id] != vec![] {
+                        // Address tx spent out contain this tx.
+                        
                         for spent_out in &spent_txos[&tx_id] {
+                            // tx spent_out Iterator.
+                            // spent_out: {tx_id: []int(vin.Vout)}.
+                            
                             if spent_out == &(out_idx as i32) {
+                                // we've already got the output,
+                                // search if an output was already referenced in an input.
+                                // loop1: tx.vout[?] -> out_idx.
+                                // loop2: spent_txos[?] -> spent_out tx contains.
+                                // Next Iterator.
+                                // or...
+                                // make a spent in this transaction, iterator all spent id = id?
                                 continue 'outputs;
                             }
                         }
                     }
 
                     if out.to_owned().can_be_unlocked_with(address.to_owned()) {
-                        // out: TXOutput{value, script_sig}
+                        // out: TXOutput{value, script_sig}.
                         
                         unspent_txs.append(&mut vec![tx.clone()]);
                         // what the fuck of 'unspent_tx'?
                         // 1. in single TXOutput.
                         // 2. spent_txos[&tx_id] exists -> address doesn't have relation with this transaction.
+                        //                              -> doesn't contain any inputs at this address.
+                        //                              -> have relation but no referenced.
                         // 3. vout can be locked up with this address -> output is this address.
                     }
                 }
                 
                 if tx.clone().is_coinbase() == false {
                     for _vin in tx.clone().vin {
-                        // if transaction contain any inputs
+                        // if transaction contain any inputs at this address.
                         
                         if _vin.clone().can_unlock_output_with(address.to_owned()) {
-                            // input this address owns.
-                            // this to help us filiter unspent_txos;
+                            // inputs this address owns.
+                            // this to help us filiter unspent_txos.
                             
                             let in_txid = String::from_utf8(_vin.txid).unwrap();
                             let mut _trans: Vec<i32> = spent_txos.get(&in_txid).unwrap().to_owned();
                             _trans.append(&mut vec![_vin.vout]);
+                            /////////// _vin.vout -> coins? ids? but unify. /////////
+                            /////////// _vin.vout -> ids?
                             spent_txos.remove(&in_txid);
                             spent_txos.insert(in_txid, _trans.to_vec());
                         }
                     }
-                }                
+                }
             }
             if _block.prev_block_hash.len() == 0 {
                 break;
-            }            
+            }
         }
         return unspent_txs;
     }
 
-    
+    pub fn find_utxo(self, address: String) -> Vec<TXOutput> {
+        let mut utxos: Vec<TXOutput> = vec![];
+        let unspent_transactions: Vec<Transaction> = self.find_unspent_transactions(address.to_owned());
+        //for tx in unspent_transactions {
+        //    for out in tx.vout {
+        //        if out.to_owned().can_be_unlocked_with(address.to_owned()){
+        //            utxos.append(&mut vec![out]);
+        //        }
+        //    }
+        //}
+        return utxos;
+    }
 }
+
 
 pub fn new_blockchain(address:String) -> Blockchain {
     let _db = db();

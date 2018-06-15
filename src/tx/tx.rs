@@ -20,7 +20,7 @@ impl Transaction {
 
 #[derive(Clone, Serialize, Deserialize, Debug)]
 pub struct TXOutput {
-    value: i32,
+    pub value: i32,
     script_pubkey: String // just address now
 }
 #[derive(Clone, Serialize, Deserialize, Debug)]
