@@ -44,8 +44,8 @@ impl Blockchain {
                 'outputs: for (out_idx, out) in tx.clone().vout.iter().enumerate() {
                     // what is out_idx exactly.
                     // tx.vout{value(subsidy), script_pubkey(to)} iterator.
-                    
-                    if spent_txos[&tx_id] != vec![] {
+
+                    if spent_txos.get(&tx_id).is_some() && spent_txos[&tx_id] != vec![] {
                         // Address tx spent out contain this tx.
                         
                         for spent_out in &spent_txos[&tx_id] {
@@ -71,9 +71,10 @@ impl Blockchain {
                         unspent_txs.append(&mut vec![tx.clone()]);
                         // what the fuck of 'unspent_tx'?
                         // 1. in single TXOutput.
-                        // 2. spent_txos[&tx_id] exists -> address doesn't have relation with this transaction.
-                        //                              -> doesn't contain any inputs at this address.
-                        //                              -> have relation but no referenced.
+                        // 2. spent_txos[&tx_id] exists ->
+                        //            1) address doesn't have relation with this transaction.
+                        //            2) doesn't contain any inputs at this address.
+                        //            3) have relation but no referenced.
                         // 3. vout can be locked up with this address -> output is this address.
                     }
                 }
@@ -107,13 +108,13 @@ impl Blockchain {
     pub fn find_utxo(self, address: String) -> Vec<TXOutput> {
         let mut utxos: Vec<TXOutput> = vec![];
         let unspent_transactions: Vec<Transaction> = self.find_unspent_transactions(address.to_owned());
-        //for tx in unspent_transactions {
-        //    for out in tx.vout {
-        //        if out.to_owned().can_be_unlocked_with(address.to_owned()){
-        //            utxos.append(&mut vec![out]);
-        //        }
-        //    }
-        //}
+        for tx in unspent_transactions {
+            for out in tx.vout {
+                if out.to_owned().can_be_unlocked_with(address.to_owned()){
+                    utxos.append(&mut vec![out]);
+                }
+            }
+        }
         return utxos;
     }
 }

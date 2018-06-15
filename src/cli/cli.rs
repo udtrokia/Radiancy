@@ -47,8 +47,8 @@ impl CLI {
             let pow = new_proof_of_work(_block.clone(), 0);
             println!("PoW:  {}\n", pow.validate().to_string());
             if _block.prev_block_hash == vec![] {
-            println!(" <-- Complete! --> ");
-            break;
+                println!(" <-- Complete! --> ");
+                break;
             };
         }; 
     }
@@ -59,10 +59,10 @@ impl CLI {
         let mut balance = 0;
         let utxos = _bc.find_utxo(address.to_owned());
         //
-        //for out in utxos {
-        //    balance = balance + &out.value;
-        //}
-        //
-        //println!("Balance of {:?}: {:?}", address, balance);
+        for out in utxos {
+            balance = balance + &out.value;
+        }
+        
+        println!("Balance of {:?}: {:?}", address, balance);
     }
 }
