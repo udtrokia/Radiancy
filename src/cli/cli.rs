@@ -1,5 +1,6 @@
 use std::env;
 use blockchain::blockchain::{Blockchain, new_blockchain};
+use tx::tx::{new_utxo_transaction};
 use pow::pow::{new_proof_of_work};
 use num_bigint::{BigInt, Sign};
 
@@ -15,26 +16,36 @@ impl CLI {
         }
         let _arg = env::args().nth(1).unwrap();
         match _arg.as_str() {
-            "address" => {self.create(); },
+            "create" => {self.create(); },
             "help" => { self.help(); },
             "get_balance" => { self.get_balance(); },
             "print" => { self.print_chain(); },
-            _ => println!("no match"),
+            "send" => { self.send(); },
+            _ => { self.help() }
         }
     }
     pub fn help(self) {
         println!("\nUsage: radiancy COMMAND;");
         println!("\n<--Yellow Brick Road-->");
         println!("\nCOMMANDS:");
-        println!("    address        Genesis Coin to address;");
-        println!("    get_balance    Get address balance;");        
+        println!("    create         Generate a blockchain;");
+        println!("    get_balance    Get address balance;");
         println!("    print          Print blocks in Radiancy;");
+        println!("    send           Send coin between addresses;");
         println!("");
     }
+    
     pub fn create(self){
+        if env::args().nth(2).is_none() {
+            println!("Please input address");
+            return;
+        }
         let address = env::args().nth(2).unwrap();
         new_blockchain(address.to_string());
+
+        println!("\nSuccess!\n");
     }
+    
     pub fn print_chain(self) {
         let mut _bci = self.blockchain.iterator();
         loop {
@@ -50,19 +61,55 @@ impl CLI {
                 println!(" <-- Complete! --> ");
                 break;
             };
-        }; 
+        };
     }
+    
     pub fn get_balance(self) {
+        if env::args().nth(2).is_none() {
+            println!("\nPlease input address name\n");
+            return;
+        }
         let address = env::args().nth(2).unwrap().to_string();
+        println!("\nlink blockchain....");
         let _bc = new_blockchain(address.to_owned());
-
+        
         let mut balance = 0;
+        println!("find utxos...");
         let utxos = _bc.find_utxo(address.to_owned());
-        //
+
+        println!("sum utxos...");
         for out in utxos {
+            println!("{:?}", out);
             balance = balance + &out.value;
         }
         
-        println!("Balance of {:?}: {:?}", address, balance);
+        println!("\nBalance of {:?}: {:?}\n", address, balance);
+    }
+    
+    pub fn send(self) {
+        if env::args().nth(2).is_none() {
+            println!("\nPlease input `to` address.\n");
+            return;
+        }
+        if env::args().nth(3).is_none() {
+            println!("\nPlease input `from` address.\n");
+            return;
+        }
+        if env::args().nth(4).is_none() {
+            println!("\nPlease input coin amount.\n");
+            return;
+        }
+        let _to = env::args().nth(2).unwrap().to_string();
+        let _from = env::args().nth(3).unwrap().to_string();
+        let _amount = env::args().nth(4).unwrap().parse::<i32>().unwrap();
+            
+        let _bc = new_blockchain(_from.to_owned());
+        let _tx = new_utxo_transaction(_to, _from, _amount, _bc.to_owned());
+        if _tx.is_none() { println!("\nnot enough funds~\n");return;}
+        _bc.mine_block(vec![_tx.unwrap()]);
+        println!("\nSussess!\n")
     }
 }
+
+
+
