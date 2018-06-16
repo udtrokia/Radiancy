@@ -9,5 +9,5 @@ Bruno Schulz (July 12, 1892 – November 19, 1942) was a Polish Jewish writer, f
 
 ### Release Code
 
-+ [v0.0.11](https://github.com/udtrokia/Radiancy/release/tag/v0.0.11)
++ [v0.0.11](https://github.com/udtrokia/Radiancy/releases/tag/v0.0.11)
 

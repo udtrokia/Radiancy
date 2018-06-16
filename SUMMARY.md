@@ -1,9 +1,7 @@
 # Summary
 
-* [Introduction](README.md)
+* [Yellow Brick Road](README.md)
 * [Basquiat - Orphan Blockchain](/markdown/basquiat/README.md)
-  * [Main](/markdown/basquiat/main.md)
-  * [Block](/markdown/basquiat/block.md)
-  * [Blockchain](/markdown/basquiat/blockchain.md)  
 * [Andy - Workable Blockchain](/markdown/andy/README.md)
 * [Bruno - Persistent Blockchain](/markdown/bruno/README.md)
+* [Paul - Tradable Blockchain. Part 1](/markdown/paul/README.md)

@@ -1,5 +1,5 @@
 # Radiancy
-## [Yellow Brick Road - Learn Rust by Blockchain](https://udtrokia.github.io/Radiancy)
+## [Yellow Brick Road - Try Rust by Blockchain](https://udtrokia.github.io/Radiancy)
 
 ![Seine](./assets/Seine.png)
 
@@ -16,7 +16,12 @@
 
 + Stable version - [v0.0.11][4]
 
+## [Chapter 4 - Paul - Tradable Blockchain. Part 1](/markdown/paul/README.md)
+
++ Stable version - [v0.0.12][4]
+
 [1]:https://github.com/udtrokia/Radiancy/releases/tag/v0.0.5
 [2]:https://github.com/udtrokia/Radiancy/releases/tag/v0.0.6
 [3]:https://github.com/udtrokia/Radiancy/releases/tag/v0.0.10
 [4]:https://github.com/udtrokia/Radiancy/releases/tag/v0.0.11
+[4]:https://github.com/udtrokia/Radiancy/releases/tag/v0.0.12
