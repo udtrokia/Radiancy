@@ -25,13 +25,14 @@ impl CLI {
         }
     }
     pub fn help(self) {
+        println!("\n<-- Hello Yellow Brick Road -->");        
         println!("\nUsage: radiancy COMMAND;");
-        println!("\n<--Yellow Brick Road-->");
         println!("\nCOMMANDS:");
         println!("    create         Generate a blockchain;");
         println!("    get_balance    Get address balance;");
         println!("    print          Print blocks in Radiancy;");
         println!("    send           Send coin between addresses;");
+        println!("\n<-- GoodBye Yellow Brick Road -->");        
         println!("");
     }
     
@@ -48,6 +49,7 @@ impl CLI {
     
     pub fn print_chain(self) {
         let mut _bci = self.blockchain.iterator();
+        println!("\n<-- Start -->\n");
         loop {
             let (_new_bci, _block) = _bci.clone().next();
             _bci = _new_bci;
@@ -58,7 +60,7 @@ impl CLI {
             let pow = new_proof_of_work(_block.clone(), 0);
             println!("PoW:  {}\n", pow.validate().to_string());
             if _block.prev_block_hash == vec![] {
-                println!(" <-- Complete! --> ");
+                println!(" <-- Complete! -->\n");
                 break;
             };
         };
@@ -70,14 +72,14 @@ impl CLI {
             return;
         }
         let address = env::args().nth(2).unwrap().to_string();
-        println!("\nlink blockchain....");
+        println!("\nlink blockchain...");
         let _bc = new_blockchain(address.to_owned());
         
         let mut balance = 0;
-        println!("find utxos...");
+        println!("\nfind utxos...");
         let utxos = _bc.find_utxo(address.to_owned());
 
-        println!("sum utxos...");
+        println!("\nsum utxos...");
         for out in utxos {
             println!("{:?}", out);
             balance = balance + &out.value;
@@ -102,12 +104,12 @@ impl CLI {
         let _to = env::args().nth(2).unwrap().to_string();
         let _from = env::args().nth(3).unwrap().to_string();
         let _amount = env::args().nth(4).unwrap().parse::<i32>().unwrap();
-            
+        println!("\nsend out transaction...");
         let _bc = new_blockchain(_from.to_owned());
         let _tx = new_utxo_transaction(_to, _from, _amount, _bc.to_owned());
         if _tx.is_none() { println!("\nnot enough funds~\n");return;}
         _bc.mine_block(vec![_tx.unwrap()]);
-        println!("\nSussess!\n")
+        println!("\n<-- Success -->!\n")
     }
 }
 
