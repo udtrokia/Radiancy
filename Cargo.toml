@@ -5,12 +5,16 @@ authors = ["mercury <udtrokia@163.com>"]
 
 [dependencies]
 args = "2.2.0"
+base58 = "0.1.0"
 bincode = "1.0.0"
+rand = "0.5.1"
 hex = "0.3.2"
 num-bigint = "0.2"
+ripemd160 = "0.7.0"
 secp256k1 = "0.9.2"
 serde = "1.0.66"
 serde_derive = "1.0.66"
 sha2 = "0.7.1"
 sled = "0.15.17"
+
 

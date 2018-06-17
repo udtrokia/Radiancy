@@ -6,9 +6,10 @@
 
 use std::env;
 use blockchain::blockchain::{Blockchain, new_blockchain};
-use tx::tx::{new_utxo_transaction};
-use pow::pow::{new_proof_of_work};
 use num_bigint::{BigInt, Sign};
+use pow::pow::{new_proof_of_work};
+use tx::tx::{new_utxo_transaction};
+use wallet::wallet::{new_wallet};
 
 pub struct CLI {
     pub blockchain: Blockchain
@@ -22,7 +23,8 @@ impl CLI {
         }
         let _arg = env::args().nth(1).unwrap();
         match _arg.as_str() {
-            "create" => {self.create(); },
+            "create_blockchain" => {self.create_blockchain(); },
+            "create_wallet" => {self.create_wallet(); },            
             "help" => { self.help(); },
             "get_balance" => { self.get_balance(); },
             "print" => { self.print_chain(); },
@@ -34,15 +36,16 @@ impl CLI {
         println!("\n<-- Hello Yellow Brick Road -->");        
         println!("\nUsage: radiancy COMMAND;");
         println!("\nCOMMANDS:");
-        println!("    create         Generate a blockchain;");
-        println!("    get_balance    Get address balance;");
-        println!("    print          Print blocks in Radiancy;");
-        println!("    send           Send coin between addresses;");
-        println!("\n<-- GoodBye Yellow Brick Road -->");        
+        println!("    create_blockchain         Generate a blockchain;");
+        println!("    create_wallet             Generate a wallet;");
+        println!("    get_balance               Get address balance;");
+        println!("    print                     Print blocks in Radiancy;");
+        println!("    send                      Send coin between addresses;");
+        println!("\n<-- GoodBye Yellow Brick Road -->");
         println!("");
     }
     
-    pub fn create(self){
+    pub fn create_blockchain(self){
         if env::args().nth(2).is_none() {
             println!("Please input address");
             return;
@@ -50,6 +53,14 @@ impl CLI {
         let address = env::args().nth(2).unwrap();
         new_blockchain(address.to_string());
 
+        println!("\nSuccess!\n");
+    }
+
+    pub fn create_wallet(self){
+        let wallet = new_wallet();
+        let _address = wallet.get_address();
+        
+        println!("\n{:?}", String::from_utf8(_address).unwrap());
         println!("\nSuccess!\n");
     }
     

@@ -7,6 +7,7 @@ pub extern crate hex;
 pub extern crate secp256k1;
 pub extern crate ripemd160;
 pub extern crate base58;
+pub extern crate rand;
 
 #[macro_use]
 pub extern crate serde_derive;

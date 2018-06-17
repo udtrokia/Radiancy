@@ -2,7 +2,9 @@
 use bincode::serialize;
 use sha2::{Sha256, Digest};
 use blockchain::blockchain::{Blockchain};
-
+use wallet::wallet::hash_pubkey;
+use base58::{FromBase58};
+    
 #[derive(Clone, Serialize, Deserialize, Debug)]
 pub struct Transaction {
     pub id: Vec<u8>,
@@ -35,24 +37,43 @@ impl Transaction {
 pub struct TXInput {
     pub txid: Vec<u8>,
     pub reward: i32, // reward from blockchain
-    pub record: String // record data;
+    pub signature: Vec<u8>,
+    pub pub_key: Vec<u8>
 }
 
 #[derive(Clone, Serialize, Deserialize, Debug)]
 pub struct TXOutput {
     pub value: i32,
-    pub address: String // just address now
+    pub pubkey_hash: Vec<u8>, // just address now
 }
 
 impl TXInput {
     pub fn can_unlock_output_with(self, unlocking_data: String) -> bool {
-        return self.record == unlocking_data;
+        return self.signature == unlocking_data.into_bytes();
+    }
+
+    pub fn uses_key(self, pubkey_hash: Vec<u8>) -> bool {
+        let locking_hash = hash_pubkey(self.pub_key);
+        
+        return locking_hash.eq(&pubkey_hash);
     }
 }
 
 impl TXOutput {
     pub fn can_be_unlocked_with(self, unlocking_data: String) -> bool {
-        return self.address == unlocking_data;
+        return self.pubkey_hash == unlocking_data.into_bytes();
+    }
+
+    pub fn lock(self, _address: String) -> TXOutput {
+        let pubkey_hash = _address.from_base58().unwrap();
+        return TXOutput{
+            value: self.value,
+            pubkey_hash: pubkey_hash,            
+        }
+    }
+
+    pub fn islocked_with_key(self, _pubkey_hash: Vec<u8>) -> bool {
+        return self.pubkey_hash.eq(&_pubkey_hash);
     }
 }
 
@@ -64,11 +85,12 @@ pub fn new_coinbase_tx(to: String, mut data: String) -> Transaction {
     let txin = TXInput {
         txid: vec![],
         reward: -1,
-        record: data,
+        signature: vec![],
+        pub_key: vec![]
     };
     let txout = TXOutput{
         value: subsidy,
-        address: to,
+        pubkey_hash: to.into_bytes(),
     };
     let mut tx = Transaction {
         id: vec![],
@@ -92,7 +114,8 @@ pub fn new_utxo_transaction(_to: String, _from: String, _amount: i32, _bc: Block
             let _input = TXInput{
                 txid: _tx_id.to_owned(),
                 reward: out.to_owned(),
-                record: _from.to_owned()
+                signature: _from.to_owned().into_bytes(),
+                pub_key: vec![]
             };
             _inputs.append(&mut vec![_input]);
         }
@@ -102,13 +125,13 @@ pub fn new_utxo_transaction(_to: String, _from: String, _amount: i32, _bc: Block
 
     _outputs.append(&mut vec![TXOutput{
         value: _amount,
-        address: _to
+        pubkey_hash: _to.into_bytes()
     }]);
     
     
     _outputs.append(&mut vec![TXOutput{
         value:  -_amount,
-        address: _from
+        pubkey_hash: _from.into_bytes()
     }]);        
     
 
