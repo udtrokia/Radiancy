@@ -31,7 +31,7 @@ impl Blockchain {
         let mut spent_txos: HashMap<String, Vec<i32>> = HashMap::new();
         let mut bci: BlockchainIterator = self.iterator();        
 
-        loop {            
+        loop {
             let (_new_bci, _block) = bci.clone().next();
             bci = _new_bci;
             for tx in _block.transactions {
@@ -39,6 +39,8 @@ impl Blockchain {
 
                 'outputs: for (out_idx, out) in tx.clone().vout.iter().enumerate() {
                     if spent_txos.get(&tx_id).is_some() && spent_txos[&tx_id] != vec![] {
+                        println!("out_idx:{:?}", out_idx);
+                        println!("spent_txos[&tx_id]: {:?}", &spent_txos[&tx_id]);
                         for spent_out in &spent_txos[&tx_id] {
                             if spent_out == &(out_idx as i32) {
                                 continue 'outputs;
@@ -47,6 +49,7 @@ impl Blockchain {
                     }
                     
                     if out.to_owned().can_be_unlocked_with(address.to_owned()) {
+                        println!("tx: {:?}", tx.clone());
                         unspent_txs.append(&mut vec![tx.clone()]);
                     }
                 }
