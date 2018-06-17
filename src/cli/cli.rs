@@ -1,3 +1,9 @@
+/*****
+    *
+  ** /radiancy/src/cli/cli.rs
+  *
+ */
+
 use std::env;
 use blockchain::blockchain::{Blockchain, new_blockchain};
 use tx::tx::{new_utxo_transaction};

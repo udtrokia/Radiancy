@@ -4,11 +4,11 @@ pub extern crate num_bigint;
 pub extern crate sled;
 pub extern crate sha2;
 pub extern crate hex;
-
+pub extern crate secp256k1;
+    
 #[macro_use]
 pub extern crate serde_derive;
 pub extern crate serde;
-pub extern crate getopts;
 
 pub mod blockchain {
     pub mod block;
@@ -31,3 +31,9 @@ pub mod cli {
 pub mod tx {
     pub mod tx;
 }
+
+pub mod wallet {
+    pub mod wallet;
+}
+
+    
