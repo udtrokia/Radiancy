@@ -5,7 +5,9 @@ pub extern crate sled;
 pub extern crate sha2;
 pub extern crate hex;
 pub extern crate secp256k1;
-    
+pub extern crate ripemd160;
+pub extern crate base58;
+
 #[macro_use]
 pub extern crate serde_derive;
 pub extern crate serde;
