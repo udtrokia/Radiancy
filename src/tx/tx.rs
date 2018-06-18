@@ -5,7 +5,8 @@ use std::collections::HashMap;
 use blockchain::blockchain::{Blockchain};
 use wallet::wallet::hash_pubkey;
 use base58::{FromBase58};
-use secp256k1::{SecretKey, Secp256k1, Message};
+use secp256k1::{SecretKey, Secp256k1, Message, PublicKey};
+use secp256k1::schnorr::Signature;
 use hex::encode;
 
 #[derive(Clone, Serialize, Deserialize, Debug)]
@@ -53,7 +54,8 @@ impl Transaction {
     pub fn sign(mut self, _private_key: SecretKey, _prev_txs: HashMap<String, Transaction>) -> Transaction {
         if self.to_owned().is_coinbase(){return self;};
         let mut _tx_copy = self.clone().trimmed_copy();
-
+        let _secp = Secp256k1::new();
+        
         for (_in_id, _vin) in _tx_copy.vin.to_owned().iter().enumerate() {
             let _prev_tx = _prev_txs[&encode(_vin.to_owned().txid)].to_owned();
             _tx_copy.vin[_in_id].signature = vec![];
@@ -64,12 +66,38 @@ impl Transaction {
             _tx_copy.id = hasher.result().to_vec();
             _tx_copy.vin[_in_id].pub_key = vec![];
 
-            let _secp = Secp256k1::new();
             let _message = Message::from_slice(&_tx_copy.id).unwrap();
             let _signature = _secp.sign_schnorr(&_message, &_private_key).unwrap().serialize();
             self.vin[_in_id].signature = _signature;
         }
         return self;
+    }
+
+    pub fn verify(self, _priv_key: SecretKey, _prev_txs: HashMap<String, Transaction>) -> bool {
+        let mut _tx_copy = self.to_owned().trimmed_copy();
+        let _secp = Secp256k1::new();
+        
+        for (_in_id, _vin) in self.to_owned().vin.iter().enumerate() {
+            let _prev_tx = _prev_txs[&encode(_vin.to_owned().txid)].to_owned();
+            _tx_copy.vin[_in_id].signature = vec![];
+            _tx_copy.vin[_in_id].pub_key = _prev_tx.vout[(_vin.vout_idx as usize)].pubkey_hash.to_owned();
+
+            let mut hasher = Sha256::new();
+            hasher.input(&serialize(&_tx_copy).unwrap());
+            _tx_copy.id = hasher.result().to_vec();
+            _tx_copy.vin[_in_id].pub_key = vec![];
+            
+            let _msg = Message::from_slice(&_tx_copy.id).unwrap();
+            let _sig = &self.vin[_in_id].signature;
+            
+            let _raw_sig = Signature::deserialize(_sig); 
+            let _pub_key = PublicKey::from_slice(&_secp, &_vin.pub_key).unwrap();
+            let _verify = _secp.verify_schnorr(&_msg, &_raw_sig, &_pub_key).is_ok();
+
+            if _verify == false { return false; };
+        }
+        return true;
+        
     }
 
     pub fn trimmed_copy(self) -> Transaction {
@@ -98,8 +126,7 @@ impl Transaction {
             vout: _outputs,
         };
 
-        return _tx_copy;
-    }
+        return _tx_copy;}
 }
 
 impl TXInput {
