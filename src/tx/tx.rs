@@ -1,15 +1,32 @@
 // Tx
 use bincode::serialize;
 use sha2::{Sha256, Digest};
+use std::collections::HashMap;
 use blockchain::blockchain::{Blockchain};
 use wallet::wallet::hash_pubkey;
 use base58::{FromBase58};
-    
+use secp256k1::{SecretKey, Secp256k1, Message};
+use hex::encode;
+
 #[derive(Clone, Serialize, Deserialize, Debug)]
 pub struct Transaction {
     pub id: Vec<u8>,
     pub vin: Vec<TXInput>, //TXInput,
     pub vout: Vec<TXOutput>, //TXOutput,
+}
+
+#[derive(Clone, Serialize, Deserialize, Debug)]
+pub struct TXInput {
+    pub txid: Vec<u8>,
+    pub vout_idx: i32, // vout_idx from blockchain
+    pub signature: Vec<u8>,
+    pub pub_key: Vec<u8>
+}
+
+#[derive(Clone, Serialize, Deserialize, Debug)]
+pub struct TXOutput {
+    pub value: i32,
+    pub pubkey_hash: Vec<u8>, // just address now
 }
 
 impl Transaction {
@@ -20,6 +37,7 @@ impl Transaction {
             return false;
         }
     }
+
     pub fn set_id(self) -> Transaction {
         let _encoder = serialize(&self.clone());
         let mut _hasher = Sha256::default();
@@ -31,20 +49,57 @@ impl Transaction {
             vout: self.vout.to_owned()
         };
     }
-}
 
-#[derive(Clone, Serialize, Deserialize, Debug)]
-pub struct TXInput {
-    pub txid: Vec<u8>,
-    pub reward: i32, // reward from blockchain
-    pub signature: Vec<u8>,
-    pub pub_key: Vec<u8>
-}
+    pub fn sign(mut self, _private_key: SecretKey, _prev_txs: HashMap<String, Transaction>) -> Transaction {
+        if self.to_owned().is_coinbase(){return self;};
+        let mut _tx_copy = self.clone().trimmed_copy();
 
-#[derive(Clone, Serialize, Deserialize, Debug)]
-pub struct TXOutput {
-    pub value: i32,
-    pub pubkey_hash: Vec<u8>, // just address now
+        for (_in_id, _vin) in _tx_copy.vin.to_owned().iter().enumerate() {
+            let _prev_tx = _prev_txs[&encode(_vin.to_owned().txid)].to_owned();
+            _tx_copy.vin[_in_id].signature = vec![];
+            _tx_copy.vin[_in_id].pub_key = _prev_tx.vout[(_vin.vout_idx as usize)].pubkey_hash.to_owned();
+
+            let mut hasher = Sha256::new();
+            hasher.input(&serialize(&_tx_copy).unwrap());
+            _tx_copy.id = hasher.result().to_vec();
+            _tx_copy.vin[_in_id].pub_key = vec![];
+
+            let _secp = Secp256k1::new();
+            let _message = Message::from_slice(&_tx_copy.id).unwrap();
+            let _signature = _secp.sign_schnorr(&_message, &_private_key).unwrap().serialize();
+            self.vin[_in_id].signature = _signature;
+        }
+        return self;
+    }
+
+    pub fn trimmed_copy(self) -> Transaction {
+        let mut _inputs: Vec<TXInput> = vec![];
+        let mut _outputs: Vec<TXOutput> = vec![];
+
+        for vin in self.vin {
+            _inputs.append( &mut vec![TXInput{
+                txid: vin.txid.to_owned(),
+                vout_idx: vin.vout_idx.to_owned(),
+                signature: vin.signature,
+                pub_key: vin.pub_key
+            }]);
+        }
+
+        for vout in self.vout {
+            _outputs.append( &mut vec![TXOutput{
+                value: vout.value,
+                pubkey_hash: vout.pubkey_hash
+            }]);
+        }
+
+        let _tx_copy = Transaction{
+            id: self.id,
+            vin: _inputs,
+            vout: _outputs,
+        };
+
+        return _tx_copy;
+    }
 }
 
 impl TXInput {
@@ -65,10 +120,12 @@ impl TXOutput {
     }
 
     pub fn lock(self, _address: String) -> TXOutput {
-        let pubkey_hash = _address.from_base58().unwrap();
+        let mut pubkey_hash = _address.from_base58().unwrap();// version +
+        pubkey_hash.remove(1);
+        pubkey_hash.resize(19,0);
         return TXOutput{
             value: self.value,
-            pubkey_hash: pubkey_hash,            
+            pubkey_hash: pubkey_hash,
         }
     }
 
@@ -77,14 +134,12 @@ impl TXOutput {
     }
 }
 
-pub fn new_coinbase_tx(to: String, mut data: String) -> Transaction {
-    if data == "".to_string() {
-        data = "Reward to ".to_string() + &to;
-    }
+pub fn new_coinbase_tx(to: String, data: String) -> Transaction {
+    println!("{:?}", data);
     let subsidy = 1;
     let txin = TXInput {
         txid: vec![],
-        reward: -1,
+        vout_idx: -1,
         signature: vec![],
         pub_key: vec![]
     };
@@ -113,7 +168,7 @@ pub fn new_utxo_transaction(_to: String, _from: String, _amount: i32, _bc: Block
         for out in _outs {
             let _input = TXInput{
                 txid: _tx_id.to_owned(),
-                reward: out.to_owned(),
+                vout_idx: out.to_owned(),
                 signature: _from.to_owned().into_bytes(),
                 pub_key: vec![]
             };

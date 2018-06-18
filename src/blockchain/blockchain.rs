@@ -39,8 +39,7 @@ impl Blockchain {
 
                 'outputs: for (out_idx, out) in tx.clone().vout.iter().enumerate() {
                     if spent_txos.get(&tx_id).is_some() && spent_txos[&tx_id] != vec![] {
-                        println!("out_idx:{:?}", out_idx);
-                        println!("spent_txos[&tx_id]: {:?}", &spent_txos[&tx_id]);
+                        println!("------------- iterator self mined out ----------------");
                         for spent_out in &spent_txos[&tx_id] {
                             if spent_out == &(out_idx as i32) {
                                 continue 'outputs;
@@ -49,7 +48,6 @@ impl Blockchain {
                     }
                     
                     if out.to_owned().can_be_unlocked_with(address.to_owned()) {
-                        println!("tx: {:?}", tx.clone());
                         unspent_txs.append(&mut vec![tx.clone()]);
                     }
                 }
@@ -57,18 +55,17 @@ impl Blockchain {
                 if tx.clone().is_coinbase() == false {
                     for _vin in tx.clone().vin {
                         if _vin.clone().can_unlock_output_with(address.to_owned()) {
+                            println!("------------- self mined out and check reward  --------------");
                             let in_txid = String::from_utf8(_vin.txid).unwrap();
                             let mut _trans: Vec<i32> = spent_txos.get(&in_txid).unwrap().to_owned();
-                            _trans.append(&mut vec![_vin.reward]);
+                            _trans.append(&mut vec![_vin.vout_idx]);
                             spent_txos.remove(&in_txid);
                             spent_txos.insert(in_txid, _trans.to_vec());
                         }
                     }
                 }
             }
-            if _block.prev_block_hash.len() == 0 {
-                break;
-            }
+            if _block.prev_block_hash.len() == 0 { break; }
         }
         return unspent_txs;
     }
@@ -95,8 +92,6 @@ impl Blockchain {
         for tx in _unspent_txs {
             let in_txid = encode(tx.clone().id);
             'work: for (_out_idx, out) in tx.clone().vout.iter().enumerate() {
-                // _out_idx again....
-                // is it alignment number?
                 if out.clone().can_be_unlocked_with(address.to_owned())
                     && _accumulated < _amount {
                         _accumulated = _accumulated + out.value;
