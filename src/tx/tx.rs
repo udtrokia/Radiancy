@@ -51,8 +51,8 @@ impl Transaction {
         };
     }
 
-    pub fn sign(mut self, _private_key: SecretKey, _prev_txs: HashMap<String, Transaction>) -> Transaction {
-        if self.to_owned().is_coinbase(){return self;};
+    pub fn sign(mut self, _prev_txs: HashMap<String, Transaction>, _private_key: SecretKey) {
+        if self.to_owned().is_coinbase(){return;};
         let mut _tx_copy = self.clone().trimmed_copy();
         let _secp = Secp256k1::new();
         
@@ -70,10 +70,9 @@ impl Transaction {
             let _signature = _secp.sign_schnorr(&_message, &_private_key).unwrap().serialize();
             self.vin[_in_id].signature = _signature;
         }
-        return self;
     }
 
-    pub fn verify(self, _priv_key: SecretKey, _prev_txs: HashMap<String, Transaction>) -> bool {
+    pub fn verify(self, _prev_txs: HashMap<String, Transaction>) -> bool {
         let mut _tx_copy = self.to_owned().trimmed_copy();
         let _secp = Secp256k1::new();
         
@@ -217,12 +216,9 @@ pub fn new_utxo_transaction(_to: String, _from: String, _amount: i32, _bc: Block
     }]);        
     
 
-    let mut _tx = Transaction{
-        id: vec![],
-        vin: _inputs,
-        vout: _outputs,
-    };
+    let mut _tx = Transaction{ id: vec![], vin: _inputs, vout: _outputs };
     _tx = _tx.set_id();
+    //_bc.sign_transaction(_tx.to_owned(), wallet.priv_key);
     
     return Some(_tx);
 }

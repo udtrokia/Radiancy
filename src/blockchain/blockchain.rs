@@ -11,6 +11,7 @@ use sled::{ Iter };
 use tx::tx::{Transaction, TXOutput, new_coinbase_tx};
 use std::collections::HashMap;
 use hex::encode;
+use secp256k1::SecretKey;
 
 #[derive(Clone)]
 pub struct Blockchain {
@@ -112,13 +113,53 @@ impl Blockchain {
         return (_accumulated, _unspent_outputs);
     }
 
+    pub fn find_transaction(self, _id: Vec<u8>) -> Transaction {
+        let mut _bci = self.iterator();
+        loop {
+            let (_new_bci, _block) = _bci.next();
+            _bci = _new_bci;
+
+            for _tx in _block.transactions {
+                if _tx.id.eq(&_id) == true { return _tx };
+            }
+            
+            if _block.prev_block_hash.len() == 0 { break; };
+        }
+
+        return Transaction{ id: vec![], vin: vec![], vout: vec![] };
+    }
+
+    pub fn sign_transaction(self, _tx: Transaction, _priv_key: SecretKey) {
+        let mut _prev_txs:HashMap<String, Transaction> = HashMap::new();
+        for _vin in _tx.vin.to_owned() {
+            let _prev_tx = self.to_owned().find_transaction(_vin.txid);
+            _prev_txs.insert(encode(_prev_tx.to_owned().id), _prev_tx);
+        }
+        _tx.sign(_prev_txs, _priv_key);
+    }
+
+    pub fn verify_transaction(self, _tx: Transaction) -> bool {
+        let mut _prev_txs:HashMap<String, Transaction> = HashMap::new();
+        for _vin in _tx.vin.to_owned() {
+            let _prev_tx = self.to_owned().find_transaction(_vin.txid);
+            _prev_txs.insert(encode(_prev_tx.to_owned().id), _prev_tx);
+        }
+        return _tx.verify(_prev_txs);
+    }
+    
     pub fn mine_block(self, transactions: Vec<Transaction>) {
         let _db = db();
         let last_hash: Vec<u8> = self.clone()
             .db.get(&"last".to_string().into_bytes()).unwrap().unwrap();
 
+        for _tx in transactions.to_owned() {
+            if self.to_owned().verify_transaction(_tx) == false {
+                panic!("ERROR: Invalid transaction");
+            }
+        }
+        
         let new_block: Block = new_block(transactions, last_hash);
-
+        
         let _set_hash = self.db.set(new_block.clone().hash, new_block.clone().serialize());
         if _set_hash.is_ok() == false { panic!(_set_hash.unwrap()) };
         let _set_last = self.db.set("last".to_string().into_bytes(), new_block.clone().hash);
