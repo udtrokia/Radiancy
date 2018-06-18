@@ -51,7 +51,7 @@ impl Transaction {
         };
     }
 
-    pub fn sign(mut self, _prev_txs: HashMap<String, Transaction>, _private_key: SecretKey) {
+    pub fn sign(mut self, _prev_txs: HashMap<String, Transaction>, _priv_key: Vec<u8>) {
         if self.to_owned().is_coinbase(){return;};
         let mut _tx_copy = self.clone().trimmed_copy();
         let _secp = Secp256k1::new();
@@ -67,7 +67,8 @@ impl Transaction {
             _tx_copy.vin[_in_id].pub_key = vec![];
 
             let _message = Message::from_slice(&_tx_copy.id).unwrap();
-            let _signature = _secp.sign_schnorr(&_message, &_private_key).unwrap().serialize();
+            let _secret_key = SecretKey::from_slice(&_secp, &_priv_key).unwrap();
+            let _signature = _secp.sign_schnorr(&_message, &_secret_key).unwrap().serialize();
             self.vin[_in_id].signature = _signature;
         }
     }
@@ -146,9 +147,8 @@ impl TXOutput {
     }
 
     pub fn lock(self, _address: String) -> TXOutput {
-        let mut pubkey_hash = _address.from_base58().unwrap();// version +
-        pubkey_hash.remove(1);
-        pubkey_hash.resize(19,0);
+        let pubkey_hash = _address.from_base58()
+            .unwrap()[1..20].to_vec();
         return TXOutput{
             value: self.value,
             pubkey_hash: pubkey_hash,

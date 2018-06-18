@@ -11,7 +11,6 @@ use sled::{ Iter };
 use tx::tx::{Transaction, TXOutput, new_coinbase_tx};
 use std::collections::HashMap;
 use hex::encode;
-use secp256k1::SecretKey;
 
 #[derive(Clone)]
 pub struct Blockchain {
@@ -129,12 +128,13 @@ impl Blockchain {
         return Transaction{ id: vec![], vin: vec![], vout: vec![] };
     }
 
-    pub fn sign_transaction(self, _tx: Transaction, _priv_key: SecretKey) {
+    pub fn sign_transaction(self, _tx: Transaction, _priv_key: Vec<u8>) {
         let mut _prev_txs:HashMap<String, Transaction> = HashMap::new();
         for _vin in _tx.vin.to_owned() {
             let _prev_tx = self.to_owned().find_transaction(_vin.txid);
             _prev_txs.insert(encode(_prev_tx.to_owned().id), _prev_tx);
         }
+
         _tx.sign(_prev_txs, _priv_key);
     }
 

@@ -37,6 +37,7 @@ pub mod tx {
 
 pub mod wallet {
     pub mod wallet;
+    pub mod wallets;
 }
 
     
