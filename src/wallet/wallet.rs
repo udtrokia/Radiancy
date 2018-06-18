@@ -14,7 +14,7 @@ use sha2::{Sha256,Digest};
 use base58::{FromBase58, ToBase58};
 
 // self
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct Wallet {
     priv_key: Vec<u8>,
     pub_key: Vec<u8>
