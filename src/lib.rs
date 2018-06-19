@@ -33,6 +33,7 @@ pub mod cli {
 
 pub mod tx {
     pub mod tx;
+    pub mod utxo_set;
 }
 
 pub mod wallet {

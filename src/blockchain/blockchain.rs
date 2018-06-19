@@ -6,7 +6,7 @@
 
 use blockchain::block::{ Block, new_genesis_block, new_block };
 use blockchain::iterator::{ Iterator as BlockchainIterator};
-use db::db::{Tree, db};
+use db::db::{Tree, block_db, state_db};
 use sled::{ Iter };
 use tx::tx::{Transaction, TXOutput, new_coinbase_tx};
 use std::collections::HashMap;
@@ -15,17 +15,19 @@ use hex::encode;
 #[derive(Clone)]
 pub struct Blockchain {
     tip: Vec<u8>,
-    db: Tree
+    pub block_db: Tree,
+    pub state_db: Tree,
 }
 
 impl Blockchain {
     pub fn iterator(self) -> BlockchainIterator {
         let bci = BlockchainIterator {
             current_hash: self.clone().tip,
-            db: self.db
+            block_db: self.block_db
         };
         return bci;
     }
+
     pub fn find_unspent_transactions(self, address: String) -> Vec<Transaction>{
         let mut unspent_txs: Vec<Transaction> = vec![];
         let mut spent_txos: HashMap<String, Vec<i32>> = HashMap::new();
@@ -74,7 +76,7 @@ impl Blockchain {
         let mut utxos: Vec<TXOutput> = vec![];
         let unspent_transactions: Vec<Transaction>
             = self.find_unspent_transactions(address.to_owned());
-
+    
         for tx in unspent_transactions {
             for out in tx.vout {
                 if out.to_owned().can_be_unlocked_with(address.to_owned()){
@@ -148,9 +150,9 @@ impl Blockchain {
     }
     
     pub fn mine_block(self, transactions: Vec<Transaction>) {
-        let _db = db();
+        let _db = block_db();
         let last_hash: Vec<u8> = self.clone()
-            .db.get(&"last".to_string().into_bytes()).unwrap().unwrap();
+            .block_db.get(&"last".to_string().into_bytes()).unwrap().unwrap();
 
         for _tx in transactions.to_owned() {
             if self.to_owned().verify_transaction(_tx) == false {
@@ -160,17 +162,17 @@ impl Blockchain {
         
         let new_block: Block = new_block(transactions, last_hash);
         
-        let _set_hash = self.db.set(new_block.clone().hash, new_block.clone().serialize());
+        let _set_hash = self.block_db.set(new_block.clone().hash, new_block.clone().serialize());
         if _set_hash.is_ok() == false { panic!(_set_hash.unwrap()) };
-        let _set_last = self.db.set("last".to_string().into_bytes(), new_block.clone().hash);
+        let _set_last = self.block_db.set("last".to_string().into_bytes(), new_block.clone().hash);
         if _set_last.is_ok() == false { panic!(_set_last.unwrap()) };
     }
 }
 
 
 pub fn new_blockchain(address:String) -> Blockchain {
-    let _db = db();
-    let _dbc = db().clone();
+    let _db = block_db();
+    let _dbc = block_db().clone();
     let tip: Vec<u8>;
     let iter:Iter = _dbc.scan(b"no previous block...");
     
@@ -189,8 +191,9 @@ pub fn new_blockchain(address:String) -> Blockchain {
         tip = _db.get(&"last".to_string().into_bytes()).unwrap().unwrap().to_vec();
     }
     let _new_blockchain = Blockchain {
-        db: _db,
-        tip: tip
+        tip: tip,
+        block_db: block_db(),
+        state_db: state_db(),
     };
     return _new_blockchain;
 }

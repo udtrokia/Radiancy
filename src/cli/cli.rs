@@ -123,12 +123,17 @@ impl CLI {
         let _amount = env::args().nth(4).unwrap().parse::<i32>().unwrap();
         println!("\nsend out transaction...");
         let _bc = new_blockchain(_from.to_owned());
-        let _tx = new_utxo_transaction(_to, _from, _amount, _bc.to_owned());
+        let _tx = new_utxo_transaction(_to, _from.to_owned(), _amount, _bc.to_owned());
         if _tx.is_none() { println!("\nnot enough funds~\n");return;}
+
         _bc.mine_block(vec![_tx.unwrap()]);
         println!("\n<-- Success -->!\n")
     }
 }
+
+
+
+
 
 
 
