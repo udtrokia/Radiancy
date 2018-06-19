@@ -4,12 +4,10 @@
   *
  */
 
-use num_bigint::{BigInt, Sign};
+pub use num_bigint::{BigInt, Sign};
+pub use blockchain::block::Block;
 use sha2::{Sha256, Digest};
-use blockchain::block::Block;
 use std::cmp::Ordering;
-use std::ops::Shl;
-
 
 #[derive(Clone)]
 pub struct ProofOfWork {
@@ -64,11 +62,4 @@ impl ProofOfWork {
         let is_vaild:bool = _hash_int.cmp(&self.target) == Ordering::Less;
         return is_vaild;
     }
-}
-
-pub fn new_proof_of_work(b:Block, target_bits:i32) -> ProofOfWork {
-    let pre_target: BigInt = BigInt::from(1);
-    let _target = pre_target.clone().shl(256 as usize - target_bits as usize );
-    let pow: ProofOfWork = ProofOfWork { block: b, target: _target };
-    return pow;
 }

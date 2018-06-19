@@ -4,9 +4,10 @@
   * 
  */
 //extern crate colored; 
-extern crate radiancy; 
+extern crate radiancy;
 
-use radiancy::blockchain::blockchain::{Blockchain, new_blockchain};
+use radiancy::blockchain::blockchain::{Blockchain};
+use radiancy::blockchain::utils::new_blockchain;
 use radiancy::cli::cli::CLI;
 
 fn main() {

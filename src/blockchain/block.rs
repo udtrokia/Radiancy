@@ -5,7 +5,7 @@
  */
 
 use std::time::{SystemTime, UNIX_EPOCH};
-use pow::pow::new_proof_of_work;
+use pow::utils::new_proof_of_work;
 use bincode::{serialize, deserialize};
 use tx::tx::{Transaction};
 use sha2::{Sha256, Digest};
