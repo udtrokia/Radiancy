@@ -37,9 +37,10 @@ pub mod db {
 
 pub mod cli {
     pub mod cli;
+    mod get_balance;
+    mod send;
     mod help;
     mod chain;
-    mod wallet;
 }
 
 pub mod tx {
@@ -53,8 +54,8 @@ pub mod tx {
 }
 
 pub mod wallet {
+    pub mod account;
     pub mod wallet;
-    pub mod wallets;
     pub mod utils;
 }
 

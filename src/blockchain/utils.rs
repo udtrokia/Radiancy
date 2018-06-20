@@ -14,6 +14,7 @@ pub fn new_blockchain(address:String) -> Blockchain {
     
     let height = iter.count();
     let genesis_coinbase_data = "I'm genesis coinbase data".to_string();
+    
     if height == 0 {
         let cbtx = new_coinbase_tx(address, genesis_coinbase_data);
         let genesis:Block = new_genesis_block(cbtx);
@@ -26,6 +27,7 @@ pub fn new_blockchain(address:String) -> Blockchain {
     } else {
         tip = _db.get(&"last".to_string().into_bytes()).unwrap().unwrap().to_vec();
     }
+    
     let _new_blockchain = Blockchain {
         tip: tip,
         block_db: block_db(),

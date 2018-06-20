@@ -6,7 +6,7 @@
 
 use std::env;
 use blockchain::blockchain::{Blockchain};
-
+    
 pub struct CLI {
     pub blockchain: Blockchain
 }
@@ -19,13 +19,12 @@ impl CLI {
         }
         let _arg = env::args().nth(1).unwrap();
         match _arg.as_str() {
-            "create_blockchain" => {self.create_blockchain(); },
-            "create_wallet" => {self.create_wallet(); },            
             "help" => { self.help(); },
-            "get_balance" => { self.get_balance(); },
-            "print" => { self.print_chain(); },
+            "print" => { self.print_chain(); },            
+            "create_blockchain" => {self.create_blockchain(); },
+            "get_balance" => { self.get_balance(); },            
             "send" => { self.send(); },
-            _ => { self.help() }
+            _ => { self.help(); }
         }
     }
 }

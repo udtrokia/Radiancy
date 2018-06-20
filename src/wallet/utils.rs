@@ -3,7 +3,7 @@ use ripemd160::Ripemd160;
 use rand;
 use secp256k1::{Secp256k1, SecretKey, PublicKey};
 use sha2::{Sha256,Digest};
-use wallet::wallet::Wallet;
+use wallet::account::Account;
 
 pub fn hash_pubkey(pub_key: Vec<u8>) -> Vec<u8>{
     let mut hasher = Ripemd160::default();
@@ -40,13 +40,13 @@ pub fn validate_address(address: String) -> bool {
     return _actual_checksum.eq(&_target_checksum);
 }
 
-pub fn new_wallet() -> Wallet {
+pub fn new_account() -> Account {
     let (private, public) = new_keypair();
-    let wallet = Wallet {
+    let account = Account {
         priv_key: private,
         pub_key: public,
     };
-    return wallet;
+    return account;
 }
 
 pub fn pubkey_hash_to_address(mut pubkey_hash: Vec<u8>) -> Vec<u8> {
