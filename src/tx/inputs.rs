@@ -1,22 +1,20 @@
-
-use wallet::wallet::hash_pubkey;
-
+use tx::input::TXInput;
+use bincode::{serialize, deserialize};
+    
 #[derive(Clone, Serialize, Deserialize, Debug)]
-pub struct TXInput {
-    pub txid: Vec<u8>,
-    pub vout_idx: i32, // vout_idx from blockchain
-    pub signature: Vec<u8>,
-    pub pub_key: Vec<u8>
+pub struct TXInputs {
+    pub inputs: Vec<TXInput>,
 }
 
-impl TXInput {
-    pub fn can_unlock_output_with(self, unlocking_data: String) -> bool {
-        return self.signature == unlocking_data.into_bytes();
+impl TXInputs {
+    pub fn s(self) -> Vec<u8> {
+        let _result = serialize(&self);
+        assert_eq!(_result.is_ok(), true);
+        return _result.unwrap();
     }
-
-    pub fn uses_key(self, pubkey_hash: Vec<u8>) -> bool {
-        let locking_hash = hash_pubkey(self.pub_key);
-        
-        return locking_hash.eq(&pubkey_hash);
+    pub fn ds(s_inputs: Vec<u8>) -> TXInputs {
+        let _result = deserialize(&s_inputs);
+        assert_eq!(_result.is_ok(), true);
+        return _result.unwrap();
     }
 }

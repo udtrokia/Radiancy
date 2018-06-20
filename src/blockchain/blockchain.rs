@@ -26,7 +26,7 @@ impl Blockchain {
         return bci;
     }
     
-    pub fn mine_block(self, transactions: Vec<Transaction>) {
+    pub fn mine_block(self, transactions: Vec<Transaction>) -> Block {
         let _db = block_db();
         let last_hash: Vec<u8> = self.clone()
             .block_db.get(&"last".to_string().into_bytes()).unwrap().unwrap();
@@ -43,6 +43,8 @@ impl Blockchain {
         if _set_hash.is_ok() == false { panic!(_set_hash.unwrap()) };
         let _set_last = self.block_db.set("last".to_string().into_bytes(), new_block.clone().hash);
         if _set_last.is_ok() == false { panic!(_set_last.unwrap()) };
+
+        return new_block;
     }
 }
 

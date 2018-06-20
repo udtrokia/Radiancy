@@ -27,7 +27,7 @@ impl Wallets {
         return addresses;
     }
     
-    pub fn get_wallets(self, address: String) -> Wallet {
+    pub fn get_wallet(self, address: String) -> Wallet {
         let _wallet = self.wallets[&address].to_owned();
         return _wallet;
     }
@@ -40,7 +40,6 @@ impl Wallets {
         let _wallets:Wallets = deserialize(&_f_buffer[..]).unwrap();
         self = _wallets;
         return self;
-
     }
 
     pub fn save_to_file(self) -> Result<()> {

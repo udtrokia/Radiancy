@@ -5,8 +5,8 @@ use std::collections::HashMap;
 use secp256k1::{SecretKey, Secp256k1, Message, PublicKey};
 use secp256k1::schnorr::Signature;
 use hex::encode;
-use tx::inputs::TXInput;
-pub use tx::outputs::TXOutput;
+use tx::input::TXInput;
+pub use tx::output::TXOutput;
 
 
 #[derive(Clone, Serialize, Deserialize, Debug)]

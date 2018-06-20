@@ -4,6 +4,7 @@ pub extern crate num_bigint;
 pub extern crate sled;
 pub extern crate sha2;
 pub extern crate hex;
+
 // crate
 pub extern crate secp256k1;
 pub extern crate ripemd160;
@@ -43,15 +44,18 @@ pub mod cli {
 
 pub mod tx {
     pub mod tx;
-    pub mod inputs;
-    pub mod outputs;
+    pub mod input;
+    pub mod inputs;    
+    pub mod output;
+    pub mod outputs;    
     pub mod utils;
     pub mod utxo_set;
 }
 
 pub mod wallet {
-    pub mod wallets;    
     pub mod wallet;
+    pub mod wallets;
+    pub mod utils;
 }
 
     

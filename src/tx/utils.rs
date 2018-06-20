@@ -1,9 +1,9 @@
 // util
 
 use tx::tx::{Transaction};
-use tx::outputs::{TXOutput};
-use tx::inputs::{TXInput};
-use blockchain::blockchain::{Blockchain};
+use tx::output::{TXOutput};
+use tx::input::{TXInput};
+use tx::utxo_set::UTXOSet;
 
 pub fn new_coinbase_tx(to: String, data: String) -> Transaction {
     println!("{:?}", data);
@@ -28,9 +28,10 @@ pub fn new_coinbase_tx(to: String, data: String) -> Transaction {
     return tx;
 }
 
-pub fn new_utxo_transaction(_to: String, _from: String, _amount: i32, _bc: Blockchain) -> Option<Transaction> {
+pub fn new_utxo_transaction(_to: String, _from: String, _amount: i32, _utxo_set: UTXOSet) -> Option<Transaction> {
     let mut _inputs: Vec<TXInput> = vec![];
     let mut _outputs: Vec<TXOutput> = vec![];
+    let _bc = _utxo_set.blockchain;
     let (_acc, _valid_outputs) = _bc.find_spendable_outputs(_from.to_owned(), _amount);
 
     for (_txid, _outs) in _valid_outputs.clone().iter() {
