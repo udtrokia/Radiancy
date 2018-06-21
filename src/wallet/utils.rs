@@ -4,7 +4,71 @@ use rand;
 use secp256k1::{Secp256k1, SecretKey, PublicKey};
 use sha2::{Sha256,Digest};
 use wallet::account::Account;
+use std::fs::File;
+use std::io::prelude::*;
+use bincode::{serialize, deserialize};
 
+// account
+pub fn new_account() -> Account {
+    let (private, public) = new_keypair();
+    let account = Account {
+        priv_key: private,
+        pub_key: public,
+    };
+    return account;
+}
+
+pub fn create_account() {
+    let _exist = File::open("account.rdc").is_ok();
+    if _exist == true { return;};
+    let buf = File::create("account.rdc");
+    assert_eq!(buf.is_ok(), true);
+    let mut _file = buf.unwrap();    
+    let _res = _file.write( &serialize(&new_account()).unwrap() );
+    assert_eq!(_res.is_ok(), true);
+    println!("create account.... Ok(())");
+}
+
+pub fn load_account() -> Account {
+    let mut f = File::open("account.rdc").unwrap();
+    let mut _f_buffer = vec![];
+    f.read_to_end(&mut _f_buffer).unwrap();
+    
+    let _account:Account = deserialize(&_f_buffer[..]).unwrap();
+    return _account;
+}
+
+// address
+pub fn validate_address(address: String) -> bool {
+    let mut pubkey_hash = address.from_base58().unwrap();
+    let _actual_checksum = pubkey_hash[21..].to_vec();
+    let mut _version = vec![pubkey_hash[0]];
+    pubkey_hash = pubkey_hash[1..20].to_vec();
+    _version.append(&mut pubkey_hash);
+
+    let _target_checksum = check_sum(_version.to_owned());
+    return _actual_checksum.eq(&_target_checksum);
+}
+
+
+pub fn pubkey_hash_to_address(mut pubkey_hash: Vec<u8>) -> Vec<u8> {
+    let mut version = vec![00];
+    
+    version.append(&mut pubkey_hash);
+    let mut checksum = check_sum(version.to_owned());
+    version.append(&mut checksum);
+
+    let address = version.to_base58();
+    return address.into_bytes()
+}
+
+pub fn address_to_pubkey_hash(address: String) -> Vec<u8> {
+    let pubkey_hash = address.from_base58().unwrap();
+    return pubkey_hash[1..20].to_vec();
+}
+
+
+// generator
 pub fn hash_pubkey(pub_key: Vec<u8>) -> Vec<u8>{
     let mut hasher = Ripemd160::default();
     hasher.input(&pub_key);
@@ -29,33 +93,3 @@ pub fn new_keypair() -> (Vec<u8>, Vec<u8>){
     return (_priv_key.to_vec(), _public_key.serialize().to_vec());
 }
 
-pub fn validate_address(address: String) -> bool {
-    let mut pubkey_hash = address.from_base58().unwrap();
-    let _actual_checksum = pubkey_hash[21..].to_vec();
-    let mut _version = vec![pubkey_hash[0]];
-    pubkey_hash = pubkey_hash[1..20].to_vec();
-    _version.append(&mut pubkey_hash);
-
-    let _target_checksum = check_sum(_version.to_owned());
-    return _actual_checksum.eq(&_target_checksum);
-}
-
-pub fn new_account() -> Account {
-    let (private, public) = new_keypair();
-    let account = Account {
-        priv_key: private,
-        pub_key: public,
-    };
-    return account;
-}
-
-pub fn pubkey_hash_to_address(mut pubkey_hash: Vec<u8>) -> Vec<u8> {
-    let mut version = vec![00];
-    
-    version.append(&mut pubkey_hash);
-    let mut checksum = check_sum(version.to_owned());
-    version.append(&mut checksum);
-
-    let address = version.to_base58();
-    return address.into_bytes()
-}

@@ -18,7 +18,7 @@ pub struct Transaction {
 
 impl Transaction {
     pub fn is_coinbase(self) -> bool {
-        if self.id == vec![] {
+        if self.id == "coinbase".to_string().into_bytes() {
             return true;
         }else{
             return false;

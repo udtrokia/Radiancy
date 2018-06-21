@@ -5,30 +5,28 @@ use tx::output::{TXOutput};
 use tx::input::{TXInput};
 use tx::utxo_set::UTXOSet;
 
-pub fn new_coinbase_tx(to: String, data: String) -> Transaction {
-    println!("{:?}", data);
+pub fn new_coinbase_tx(to: Vec<u8>, _data: String) -> Transaction {
     let subsidy = 1;
     let txin = TXInput {
-        txid: vec![],
+        txid: "coinbase_transaction_id".to_string().into_bytes(),
         vout_idx: -1,
         signature: vec![],
-        pub_key: vec![]
+        pub_key: to.to_owned()
     };
     let txout = TXOutput{
         value: subsidy,
-        pubkey_hash: to.into_bytes(),
+        pubkey_hash: to,
     };
-    let mut tx = Transaction {
-        id: vec![],
+    let tx = Transaction {
+        id: "coinbase".to_string().into_bytes(),
         vin: vec![txin],
         vout: vec![txout]
     };
-    tx = tx.set_id();
 
     return tx;
 }
 
-pub fn new_utxo_transaction(_to: String, _from: String, _amount: i32, _utxo_set: UTXOSet) -> Option<Transaction> {
+pub fn new_utxo_transaction(_to: Vec<u8>, _from: Vec<u8>, _amount: i32, _utxo_set: UTXOSet) -> Option<Transaction> {
     let mut _inputs: Vec<TXInput> = vec![];
     let mut _outputs: Vec<TXOutput> = vec![];
     let _bc = _utxo_set.blockchain;
@@ -41,7 +39,7 @@ pub fn new_utxo_transaction(_to: String, _from: String, _amount: i32, _utxo_set:
             let _input = TXInput{
                 txid: _tx_id.to_owned(),
                 vout_idx: out.to_owned(),
-                signature: _from.to_owned().into_bytes(),
+                signature: _from.to_owned(),
                 pub_key: vec![]
             };
             _inputs.append(&mut vec![_input]);
@@ -52,13 +50,13 @@ pub fn new_utxo_transaction(_to: String, _from: String, _amount: i32, _utxo_set:
 
     _outputs.append(&mut vec![TXOutput{
         value: _amount,
-        pubkey_hash: _to.into_bytes()
+        pubkey_hash: _to
     }]);
     
     
     _outputs.append(&mut vec![TXOutput{
         value:  -_amount,
-        pubkey_hash: _from.into_bytes()
+        pubkey_hash: _from,
     }]);        
     
 

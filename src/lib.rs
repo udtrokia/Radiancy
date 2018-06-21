@@ -37,6 +37,7 @@ pub mod db {
 
 pub mod cli {
     pub mod cli;
+    mod create_account;
     mod get_balance;
     mod send;
     mod help;

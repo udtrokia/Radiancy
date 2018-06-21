@@ -1,17 +1,14 @@
-use std::env;
 use cli::cli::CLI;
 use num_bigint::{BigInt, Sign};
 use blockchain::utils::new_blockchain;
 use pow::utils::{new_proof_of_work};
+use wallet::utils::{hash_pubkey, load_account};
 
 impl CLI {
     pub fn create_blockchain(self){
-        if env::args().nth(2).is_none() {
-            println!("Please input address");
-            return;
-        }
-        let address = env::args().nth(2).unwrap();
-        new_blockchain(address.to_string());
+        let _account = load_account();
+        let _pubkey_hash = hash_pubkey(_account.pub_key);
+        new_blockchain(_pubkey_hash);
 
         println!("\nSuccess!\n");
     }

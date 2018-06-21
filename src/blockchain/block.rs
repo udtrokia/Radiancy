@@ -35,12 +35,14 @@ impl Block {
         hasher.input(&tx_hashes);
         return hasher.result().to_vec();
     }
+    pub fn ds(data: Vec<u8>) -> Block {
+        let decode = deserialize(&data);
+        assert_eq!(decode.is_ok(), true);
+        return decode.unwrap();
+    }    
 }
 
-pub fn deserialize_block(data: Vec<u8>) -> Block {
-    let decode:Block = deserialize(&data).unwrap();
-    return decode;
-}
+
 
 pub fn new_block(transactions: Vec<Transaction>, prev_block_hash: Vec<u8>) -> Block {
     let block:Block = Block {

@@ -4,6 +4,7 @@ use tx::outputs::{TXOutputs};
 use std::collections::HashMap;
 use hex::encode;
 use blockchain::iterator::{ Iterator as BlockchainIterator };
+use wallet::utils::pubkey_hash_to_address;
 
 impl Blockchain {
     pub fn find_transaction(self, _id: Vec<u8>) -> Transaction {
@@ -22,7 +23,8 @@ impl Blockchain {
         return Transaction{ id: vec![], vin: vec![], vout: vec![] };
     }
     
-    pub fn find_spendable_outputs(self, address: String, _amount: i32) -> (i32, HashMap<String, Vec<i32>>) {
+    pub fn find_spendable_outputs(self, pubkey_hash: Vec<u8>, _amount: i32) -> (i32, HashMap<String, Vec<i32>>) {
+        let address = String::from_utf8(pubkey_hash_to_address(pubkey_hash)).unwrap();
         let mut _unspent_outputs:HashMap<String, Vec<i32>> = HashMap::new();
         let _unspent_txs = self.find_unspent_transactions(address.to_owned());
         let mut _accumulated = 0;

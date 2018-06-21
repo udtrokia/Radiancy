@@ -10,7 +10,7 @@ use wallet::utils::{
 };
 
 // self
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Account {
     pub priv_key: Vec<u8>,
     pub pub_key: Vec<u8>

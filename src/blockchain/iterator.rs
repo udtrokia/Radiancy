@@ -1,4 +1,4 @@
-use blockchain::block::{Block, deserialize_block};
+use blockchain::block::Block;
 use db::db::{Tree, block_db};
 use hex::encode;
 
@@ -13,7 +13,7 @@ impl Iterator {
         println!("iterator block: {:?}", encode(&self.current_hash));
         let _db = block_db();
         let _encode_block = _db.get(&self.current_hash);
-        let _block:Block = deserialize_block(_encode_block.unwrap().unwrap());
+        let _block:Block = Block::ds(_encode_block.unwrap().unwrap());
         self.current_hash =  _block.clone().prev_block_hash;
         return (self.clone(), _block);
     }
