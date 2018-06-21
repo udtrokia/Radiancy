@@ -51,22 +51,8 @@ impl Blockchain {
         return (_accumulated, _unspent_outputs);
     }
     
-    //pub fn find_utxo(self, address: String) -> Vec<TXOutput> {
-    //    let mut utxos: Vec<TXOutput> = vec![];
-    //    let unspent_transactions: Vec<Transaction>
-    //        = self.find_unspent_transactions(address.to_owned());
-    //    
-    //    for tx in unspent_transactions {
-    //        for out in tx.vout {
-    //            if out.to_owned().can_be_unlocked_with(address.to_owned()){
-    //                utxos.append(&mut vec![out]);
-    //            }
-    //        }
-    //    }
-    //    return utxos;
-    //}
-
     pub fn find_utxo(self) -> HashMap<String, TXOutputs> {
+        println!("find_utxo.....");
         let mut _utxo:HashMap<String, TXOutputs> = HashMap::new();
         let mut spent_txos:HashMap<String, Vec<i32>> = HashMap::new();
         let mut bci: BlockchainIterator = self.iterator();
@@ -103,6 +89,7 @@ impl Blockchain {
     }
     
     pub fn find_unspent_transactions(self, address: String) -> Vec<Transaction> {
+        println!("find_unspent_trasactions....");
         let mut unspent_txs: Vec<Transaction> = vec![];
         let mut spent_txos: HashMap<String, Vec<i32>> = HashMap::new();
         let mut bci: BlockchainIterator = self.iterator();
@@ -112,7 +99,6 @@ impl Blockchain {
             bci = _new_bci;
             for tx in _block.transactions {
                 let tx_id = encode(tx.clone().id);
-
                 'outputs: for (out_idx, out) in tx.clone().vout.iter().enumerate() {
                     if spent_txos.get(&tx_id).is_some() && spent_txos[&tx_id] != vec![] {
                         println!("------------- iterator self mined out ----------------");
@@ -127,7 +113,7 @@ impl Blockchain {
                         unspent_txs.append(&mut vec![tx.clone()]);
                     }
                 }
-
+                
                 if tx.clone().is_coinbase() == false {
                     for _vin in tx.clone().vin {
                         if _vin.clone().can_unlock_output_with(address.to_owned()) {
@@ -139,8 +125,10 @@ impl Blockchain {
                             spent_txos.insert(in_txid, _trans.to_vec());
                         }
                     }
-                }
+                } 
+                
             }
+
             if _block.prev_block_hash.len() == 0 { break; }
         }
         return unspent_txs;

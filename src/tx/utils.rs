@@ -4,6 +4,7 @@ use tx::tx::{Transaction};
 use tx::output::{TXOutput};
 use tx::input::{TXInput};
 use tx::utxo_set::UTXOSet;
+use wallet::utils::load_account;
 
 pub fn new_coinbase_tx(to: Vec<u8>, _data: String) -> Transaction {
     let subsidy = 1;
@@ -30,19 +31,20 @@ pub fn new_utxo_transaction(_to: Vec<u8>, _from: Vec<u8>, _amount: i32, _utxo_se
     let mut _inputs: Vec<TXInput> = vec![];
     let mut _outputs: Vec<TXOutput> = vec![];
     let _bc = _utxo_set.blockchain;
-    let (_acc, _valid_outputs) = _bc.find_spendable_outputs(_from.to_owned(), _amount);
-
-    for (_txid, _outs) in _valid_outputs.clone().iter() {
-        let _tx_id = _txid.to_owned().into_bytes();
-        
-        for out in _outs {
-            let _input = TXInput{
-                txid: _tx_id.to_owned(),
-                vout_idx: out.to_owned(),
-                signature: _from.to_owned(),
-                pub_key: vec![]
-            };
-            _inputs.append(&mut vec![_input]);
+    let (_acc, _valid_outputs) = _bc.to_owned().find_spendable_outputs(_from.to_owned(), _amount);
+    if _valid_outputs.is_empty() == false {
+        for (_txid, _outs) in _valid_outputs.clone().iter() {
+            let _tx_id = _txid.to_owned().into_bytes();
+            
+            for out in _outs {
+                let _input = TXInput{
+                    txid: _tx_id.to_owned(),
+                    vout_idx: out.to_owned(),
+                    signature: _from.to_owned(),
+                    pub_key: vec![]
+                };
+                _inputs.append(&mut vec![_input]);
+            }
         }
     }
 
@@ -62,7 +64,7 @@ pub fn new_utxo_transaction(_to: Vec<u8>, _from: Vec<u8>, _amount: i32, _utxo_se
 
     let mut _tx = Transaction{ id: vec![], vin: _inputs, vout: _outputs };
     _tx = _tx.set_id();
-    //_bc.sign_transaction(_tx.to_owned(), wallet.priv_key);
+    _bc.sign_transaction(_tx.to_owned(), load_account().priv_key);
     
     return Some(_tx);
 }

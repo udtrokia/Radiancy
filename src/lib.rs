@@ -42,6 +42,7 @@ pub mod cli {
     mod send;
     mod help;
     mod chain;
+    mod print_address;
 }
 
 pub mod tx {

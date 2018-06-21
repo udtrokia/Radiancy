@@ -1,6 +1,6 @@
 // TXOutput
 
-use base58::{FromBase58};
+use base58::FromBase58;
 
 #[derive(Clone, Serialize, Deserialize, Debug)]
 pub struct TXOutput {
@@ -9,8 +9,10 @@ pub struct TXOutput {
 }
 
 impl TXOutput {
-    pub fn can_be_unlocked_with(self, unlocking_data: String) -> bool {
-        return self.pubkey_hash == unlocking_data.into_bytes();
+    pub fn can_be_unlocked_with(self, address: String) -> bool {
+        let _pubkey_hash = address.from_base58()
+            .unwrap()[1..21].to_vec();
+        return self.pubkey_hash.eq(&_pubkey_hash);
     }
 
     pub fn lock(self, _address: String) -> TXOutput {

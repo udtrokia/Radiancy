@@ -20,7 +20,8 @@ impl CLI {
         let _arg = env::args().nth(1).unwrap();
         match _arg.as_str() {
             "help" => { self.help(); },
-            "print" => { self.print_chain(); },
+            "print_chain" => { self.print_chain(); },
+            "print_address" => { self._print_address(); },
             "create_account" => { self._create_account(); },
             "create_blockchain" => {self.create_blockchain(); },
             "get_balance" => { self.get_balance(); },

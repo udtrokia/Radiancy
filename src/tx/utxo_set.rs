@@ -45,14 +45,11 @@ impl UTXOSet {
     pub fn find_utxo(self, _pubkey_hash: Vec<u8>) -> TXOutputs {
         let mut _utxos: TXOutputs = TXOutputs{outputs: vec![]};
         let mut _db = self.blockchain.state_db.iter();
-        println!("count: {:?}", self.blockchain.to_owned().state_db.iter().count());
         for _res in _db {
             assert_eq!(_res.is_ok(), true);
             let (_k, _v) = _res.unwrap();
             let _outs = TXOutputs::ds(_v);
-            println!("{:?}", &_outs);
             for out in _outs.outputs {
-                println!("{:?}", out.to_owned());
                 if out.to_owned().islocked_with_key(_pubkey_hash.to_owned()) {
                     _utxos.outputs.append(&mut vec![out]);
                 }

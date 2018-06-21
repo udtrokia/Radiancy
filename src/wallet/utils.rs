@@ -39,6 +39,10 @@ pub fn load_account() -> Account {
 }
 
 // address
+pub fn print_address() {
+    println!("address: {:?}", String::from_utf8(new_account().get_address()).unwrap());
+}
+
 pub fn validate_address(address: String) -> bool {
     let mut pubkey_hash = address.from_base58().unwrap();
     let _actual_checksum = pubkey_hash[21..].to_vec();

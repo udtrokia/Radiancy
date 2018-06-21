@@ -8,7 +8,8 @@ impl CLI {
         println!("    create_blockchain         Generate a blockchain;");
         println!("    create_wallet             Generate a wallet;");
         println!("    get_balance               Get address balance;");
-        println!("    print                     Print blocks in Radiancy;");
+        println!("    print_chain               Print blocks in Radiancy;");
+        println!("    print_address             Print blocks in Radiancy;");        
         println!("    send                      Send coin between addresses;");
         println!("\n<-- GoodBye Yellow Brick Road -->");
         println!("");
