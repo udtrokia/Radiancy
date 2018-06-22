@@ -27,15 +27,16 @@ impl Blockchain {
     }
     
     pub fn mine_block(self, transactions: Vec<Transaction>) -> Block {
+        println!("mining block .....");
         let _db = block_db();
         let last_hash: Vec<u8> = self.clone()
             .block_db.get(&"last".to_string().into_bytes()).unwrap().unwrap();
 
-        //for _tx in transactions.to_owned() {
-        //    if self.to_owned().verify_transaction(_tx) == false {
-        //        panic!("ERROR: Invalid transaction");
-        //    }
-        //}
+        for _tx in transactions.to_owned() {
+            if self.to_owned().verify_transaction(_tx) == false {
+                panic!("ERROR: VERIFY FAILED!");
+            }
+        }
         
         let new_block: Block = new_block(transactions, last_hash);
         

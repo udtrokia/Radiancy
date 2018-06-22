@@ -17,24 +17,29 @@ impl CLI {
             println!("\nPlease input coin amount.\n");
             return;
         }
-        
+
+        // convert.
         let _to_arg = env::args().nth(2).unwrap().to_string();
         let _to = address_to_pubkey_hash(_to_arg);
         
         let _amount = env::args().nth(3).unwrap().parse::<i32>().unwrap();
-        println!("\nsend out transaction...");
 
         let account = load_account();
         let pubkey_hash = hash_pubkey(account.pub_key);
+
+        // blockchain part.
         let _bc = new_blockchain(pubkey_hash.to_owned());
         let _utxo_set = UTXOSet{blockchain: _bc.to_owned()};
-        let _tx = new_utxo_transaction(_to, pubkey_hash.to_owned(), _amount, _utxo_set.to_owned());
-        if _tx.is_none() { println!("\nnot enough funds~\n");return;}
 
+        // transaction start.
+        let _tx = new_utxo_transaction(_to, pubkey_hash.to_owned(), _amount, _utxo_set.to_owned());
+        if _tx.is_none() { println!("\nnot enough funds~\n");return;};
+        
         let _cbtx = new_coinbase_tx(pubkey_hash, "".to_string());
         let _txs = vec![_cbtx, _tx.unwrap()];
         let new_block = _bc.mine_block(_txs);
+        
         _utxo_set.update(new_block);
         println!("\n<-- Success -->!\n")
-    }    
+    }
 }

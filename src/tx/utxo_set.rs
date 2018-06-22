@@ -27,9 +27,9 @@ impl UTXOSet {
         let mut _accumulated = 0;
         let mut _db = self.blockchain.state_db.iter();
         
-        for _res in _db.next() {
+        for _res in _db {
             assert_eq!(_res.is_ok(), true);
-            let (_k, _v) = _db.next().unwrap().unwrap();
+            let (_k, _v) = _res.unwrap();//_db.next().unwrap().unwrap();
             let _tx_id = encode(_k);
             let _outs = TXOutputs::ds(_v);
             for (_out_idx, _out) in _outs.outputs.iter().enumerate() {

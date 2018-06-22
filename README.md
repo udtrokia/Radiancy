@@ -24,9 +24,14 @@
 
 + Stable version - [v0.0.13][6]
 
+### [Chapter 6 - Claude - Tradable Blockchain. Part 2](/markdown/claude/README.md)
+
++ Stable version - [v0.0.14][7]
+
 [1]:https://github.com/udtrokia/Radiancy/releases/tag/v0.0.5
 [2]:https://github.com/udtrokia/Radiancy/releases/tag/v0.0.6
 [3]:https://github.com/udtrokia/Radiancy/releases/tag/v0.0.10
 [4]:https://github.com/udtrokia/Radiancy/releases/tag/v0.0.11
 [5]:https://github.com/udtrokia/Radiancy/releases/tag/v0.0.12
 [6]:https://github.com/udtrokia/Radiancy/releases/tag/v0.0.12
+[7]:https://github.com/udtrokia/Radiancy/releases/tag/v0.0.13

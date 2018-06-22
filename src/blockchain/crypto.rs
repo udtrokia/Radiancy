@@ -6,6 +6,7 @@ use hex::encode;
 
 impl Blockchain {
     pub fn sign_transaction(self, _tx: Transaction, _priv_key: Vec<u8>) {
+        println!("sign transaction....");
         let mut _prev_txs:HashMap<String, Transaction> = HashMap::new();
         for _vin in _tx.vin.to_owned() {
             let _prev_tx = self.to_owned().find_transaction(_vin.txid);
@@ -16,6 +17,7 @@ impl Blockchain {
     }
 
     pub fn verify_transaction(self, _tx: Transaction) -> bool {
+        println!("verify transaction....");
         let mut _prev_txs:HashMap<String, Transaction> = HashMap::new();
         for _vin in _tx.vin.to_owned() {
             let _prev_tx = self.to_owned().find_transaction(_vin.txid);

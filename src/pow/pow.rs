@@ -38,6 +38,7 @@ impl ProofOfWork {
             hash_int = BigInt::from_bytes_be(Sign::Plus, &hasher.clone().result());
             if hash_int.cmp(&self.target) == Ordering::Less {
                 println!("\nMining out block: {:x}", &hasher.result());
+                println!("\nReward 10 RDC ~");
                 break;
             } else {
                 nonce += 1;

@@ -7,7 +7,7 @@ use secp256k1::schnorr::Signature;
 use hex::encode;
 use tx::input::TXInput;
 pub use tx::output::TXOutput;
-
+use wallet::utils::load_account;
 
 #[derive(Clone, Serialize, Deserialize, Debug)]
 pub struct Transaction {
@@ -18,7 +18,7 @@ pub struct Transaction {
 
 impl Transaction {
     pub fn is_coinbase(self) -> bool {
-        if self.id == "coinbase".to_string().into_bytes() {
+        if self.id == vec![] {
             return true;
         }else{
             return false;
@@ -45,7 +45,7 @@ impl Transaction {
         for (_in_id, _vin) in _tx_copy.vin.to_owned().iter().enumerate() {
             let _prev_tx = _prev_txs[&encode(_vin.to_owned().txid)].to_owned();
             _tx_copy.vin[_in_id].signature = vec![];
-            _tx_copy.vin[_in_id].pub_key = _prev_tx.vout[(_vin.vout_idx as usize)].pubkey_hash.to_owned();
+            _tx_copy.vin[_in_id].pub_key = load_account().pub_key;
 
             let mut hasher = Sha256::new();
             hasher.input(&serialize(&_tx_copy).unwrap());
@@ -60,13 +60,15 @@ impl Transaction {
     }
 
     pub fn verify(self, _prev_txs: HashMap<String, Transaction>) -> bool {
+        println!("verify...");
         let mut _tx_copy = self.to_owned().trimmed_copy();
         let _secp = Secp256k1::new();
         
         for (_in_id, _vin) in self.to_owned().vin.iter().enumerate() {
             let _prev_tx = _prev_txs[&encode(_vin.to_owned().txid)].to_owned();
+            if _prev_tx.to_owned().is_coinbase() == true {return true};
             _tx_copy.vin[_in_id].signature = vec![];
-            _tx_copy.vin[_in_id].pub_key = _prev_tx.vout[(_vin.vout_idx as usize)].pubkey_hash.to_owned();
+            _tx_copy.vin[_in_id].pub_key = load_account().pub_key;
 
             let mut hasher = Sha256::new();
             hasher.input(&serialize(&_tx_copy).unwrap());
@@ -74,12 +76,15 @@ impl Transaction {
             _tx_copy.vin[_in_id].pub_key = vec![];
             
             let _msg = Message::from_slice(&_tx_copy.id).unwrap();
+            if &self.vin[_in_id].signature.len() == &0 {
+                println!("ERROR: NO SIGNATURE!");
+                return false;
+            };
             let _sig = &self.vin[_in_id].signature;
-            
-            let _raw_sig = Signature::deserialize(_sig); 
+
+            let _raw_sig = Signature::deserialize(_sig);
             let _pub_key = PublicKey::from_slice(&_secp, &_vin.pub_key).unwrap();
             let _verify = _secp.verify_schnorr(&_msg, &_raw_sig, &_pub_key).is_ok();
-
             if _verify == false { return false; };
         }
         return true;
