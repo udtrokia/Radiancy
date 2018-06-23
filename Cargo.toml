@@ -4,6 +4,7 @@ version = "0.1.0"
 authors = ["mercury <udtrokia@163.com>"]
 description = "Try Rust by Blockchain"
 homepage = "https://udtrokia.github.io/Radiancy"
+license = "MIT"
 repository = "https://github.com/udtrokia/Raiancy.git"
 
 [dependencies]

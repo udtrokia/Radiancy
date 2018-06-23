@@ -172,14 +172,18 @@ radiancy send <address> <amount>
 
 
 
+### License 
+
+
+
+MIT
+
+
+
 ### Contribute
 
 
 
 udtrokia.
-
-
-
-  
 
 
