@@ -1,6 +1,7 @@
 # Summary
 
-* [Yellow Brick Road](README.md)
+* [Introduce](README.md)
+* [Yellow Brick Road](/markdown/notes/README.md)
 * [Basquiat - Orphan Blockchain](/markdown/basquiat/README.md)
 * [Andy - Workable Blockchain](/markdown/andy/README.md)
 * [Bruno - Persistent Blockchain](/markdown/bruno/README.md)

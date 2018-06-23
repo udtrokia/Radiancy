@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Yellow Brick Road · GitBook</title>
+        <title>Introduce · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -57,7 +57,7 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="markdown/basquiat/" />
+    <link rel="next" href="markdown/notes/" />
     
     
 
@@ -92,6 +92,19 @@
                 <a href="./">
             
                     
+                    Introduce
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="markdown/notes/">
+            
+                <a href="markdown/notes/">
+            
+                    
                     Yellow Brick Road
             
                 </a>
@@ -100,7 +113,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2" data-path="markdown/basquiat/">
+        <li class="chapter " data-level="1.3" data-path="markdown/basquiat/">
             
                 <a href="markdown/basquiat/">
             
@@ -113,7 +126,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.3" data-path="markdown/andy/">
+        <li class="chapter " data-level="1.4" data-path="markdown/andy/">
             
                 <a href="markdown/andy/">
             
@@ -126,7 +139,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4" data-path="markdown/bruno/">
+        <li class="chapter " data-level="1.5" data-path="markdown/bruno/">
             
                 <a href="markdown/bruno/">
             
@@ -139,7 +152,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.5" data-path="markdown/paul/">
+        <li class="chapter " data-level="1.6" data-path="markdown/paul/">
             
                 <a href="markdown/paul/">
             
@@ -152,7 +165,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6" data-path="markdown/vincent/">
+        <li class="chapter " data-level="1.7" data-path="markdown/vincent/">
             
                 <a href="markdown/vincent/">
             
@@ -165,7 +178,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.7" data-path="markdown/claude/">
+        <li class="chapter " data-level="1.8" data-path="markdown/claude/">
             
                 <a href="markdown/claude/">
             
@@ -208,7 +221,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >Yellow Brick Road</a>
+        <a href="." >Introduce</a>
     </h1>
 </div>
 
@@ -223,34 +236,87 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="radiancy">Radiancy</h1>
-<h3 id="yellow-brick-road---try-rust-by-blockchain"><a href="https://udtrokia.github.io/Radiancy" target="_blank">Yellow Brick Road - Try Rust by Blockchain</a></h3>
-<p><img src="assets/Seine.png" alt="Seine"></p>
-<h3 id="chapter-1---basquiat---orphan-blockchain"><a href="markdown/basquiat/">Chapter 1 - Basquiat - Orphan Blockchain</a></h3>
+                                <h1 id="introduce">Introduce</h1>
+<h2 id="summary">SUMMARY</h2>
+<p>Radiancy is a toy blockchain what I regard as a blockchain playground. Five built-in commands can help us taste the taste of  blockchain honey. It&apos;s actually about... proof of work, database, crypto transaction and wallet &#x2014;&#x2014; A relatively completely transaction system but lack of coinbase handlings, consensus and network.</p>
+<p>In order to ensure every command runs correctlly, Radiancy will generate a database and a wallet in current path whatever you have inputted &#x1F602;</p>
+<p>Anyway, Radiancy is simple and easy to use... And I wish all of Radiancy users get a pretty good experience with Radiancy.</p>
+<p>That is... Welcome to the blockchain world,  and Long Live Rock n Roll.</p>
+<h2 id="installation">INSTALLATION</h2>
 <ul>
-<li>One file version - <a href="https://github.com/udtrokia/Radiancy/releases/tag/v0.0.5" target="_blank">v0.0.5</a></li>
-<li>Stable version - <a href="https://github.com/udtrokia/Radiancy/releases/tag/v0.0.6" target="_blank">v0.0.6</a></li>
+<li>Shell</li>
 </ul>
-<h3 id="chapter-2---andy---workable-blockchain"><a href="markdown/andy/">Chapter 2 - Andy - Workable Blockchain</a></h3>
+<pre><code>~ curl https://udtrokia.github.io/homebrew-udtrokia/scripts/radiancy.sh | sh 
+~ source ~/.bashrc &amp;&amp; radiancy help
+</code></pre><ul>
+<li>Build from source code</li>
+</ul>
+<pre><code>~ git clone git@github.com:udtrokia/Radiancy.git
+~ cd /path/to/radiancy/ &amp;&amp; cargo build
+</code></pre><h2 id="usage">USAGE</h2>
+<pre><code> &#x2137;  radiancy
+
+&lt;-- Hello Yellow Brick Road --&gt;
+
+Usage: radiancy COMMAND;
+
+COMMANDS:
+    create_blockchain         Generate a blockchain;
+    create_wallet             Generate a wallet;
+    get_balance               Get address balance;
+    print_chain               Print blocks in Radiancy;
+    print_address             Print blocks in Radiancy;
+    send                      Send coin between addresses;
+
+&lt;-- GoodBye Yellow Brick Road --&gt;
+</code></pre><h2 id="command">COMMAND</h2>
+<h3 id="createblockchain">create_blockchain</h3>
+<blockquote>
+<p>Generate a blockchain with db and default wallet.</p>
+</blockquote>
+<p><strong>Example</strong></p>
+<pre><code>radiancy create_blockchain
+</code></pre><p>Actually, in the current version, this command is useless: <code>create both db and wallet in the current path.</code></p>
+<h3 id="createwallet">create_wallet</h3>
+<blockquote>
+<p>Generate a wallet file in the current path.</p>
+</blockquote>
+<p><strong>Example</strong></p>
+<pre><code>radiancy create_walelt
+</code></pre><p>And then, you will find a file named <code>account.rdc</code> in the current path.</p>
+<h3 id="getbalance">get_balance</h3>
+<blockquote>
+<p>Get the balance of current account or the following.</p>
+</blockquote>
+<p><strong>Example</strong></p>
 <ul>
-<li>Stable version - <a href="https://github.com/udtrokia/Radiancy/releases/tag/v0.0.10" target="_blank">v0.0.10</a></li>
+<li>current account</li>
 </ul>
-<h3 id="chapter-3---bruno---persistent-blockchain"><a href="markdown/bruno/">Chapter 3 - Bruno - Persistent Blockchain</a></h3>
-<ul>
-<li>Stable version - <a href="https://github.com/udtrokia/Radiancy/releases/tag/v0.0.11" target="_blank">v0.0.11</a></li>
+<pre><code>radiancy get_balance
+</code></pre><ul>
+<li>address as a parameter</li>
 </ul>
-<h3 id="chapter-4---paul---tradable-blockchain-part-1"><a href="markdown/paul/">Chapter 4 - Paul - Tradable Blockchain. Part 1</a></h3>
-<ul>
-<li>Stable version - <a href="https://github.com/udtrokia/Radiancy/releases/tag/v0.0.12" target="_blank">v0.0.12</a></li>
-</ul>
-<h3 id="chapter-5---vincent---crypto-blockchain"><a href="markdown/vincent/">Chapter 5 - Vincent - Crypto Blockchain</a></h3>
-<ul>
-<li>Stable version - <a href="https://github.com/udtrokia/Radiancy/releases/tag/v0.0.12" target="_blank">v0.0.13</a></li>
-</ul>
-<h3 id="chapter-6---claude---tradable-blockchain-part-2"><a href="markdown/claude/">Chapter 6 - Claude - Tradable Blockchain. Part 2</a></h3>
-<ul>
-<li>Stable version - <a href="https://github.com/udtrokia/Radiancy/releases/tag/v0.0.13" target="_blank">v0.0.14</a></li>
-</ul>
+<pre><code>radiancy get_balance address
+</code></pre><h3 id="printchain">print_chain</h3>
+<blockquote>
+<p>Print blocks in Radiancy. Actually a iterator to print every block stored in db.</p>
+</blockquote>
+<p><strong>Example</strong></p>
+<pre><code>radiancy print_chain
+</code></pre><h3 id="printaddress">print_address</h3>
+<blockquote>
+<p>Print a test address. I set the command to test transaction... lol~</p>
+</blockquote>
+<p><strong>Example</strong></p>
+<pre><code>radiancy print_address
+</code></pre><h3 id="send">send</h3>
+<blockquote>
+<p>Transaction part. send RDC from current address to another.</p>
+</blockquote>
+<p><strong>Example</strong></p>
+<pre><code>radiancy send &lt;address&gt; &lt;amount&gt;
+</code></pre><h3 id="contribute">Contribute</h3>
+<p>udtrokia.</p>
 
                                 
                                 </section>
@@ -279,7 +345,7 @@
             
                 
                 
-                <a href="markdown/basquiat/" class="navigation navigation-next navigation-unique" aria-label="Next page: Basquiat - Orphan Blockchain">
+                <a href="markdown/notes/" class="navigation navigation-next navigation-unique" aria-label="Next page: Yellow Brick Road">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -290,7 +356,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Yellow Brick Road","level":"1.1","depth":1,"next":{"title":"Basquiat - Orphan Blockchain","level":"1.2","depth":1,"path":"markdown/basquiat/README.md","ref":"markdown/basquiat/README.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"README.md","mtime":"2018-06-22T15:26:58.230Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-06-22T15:29:21.593Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Introduce","level":"1.1","depth":1,"next":{"title":"Yellow Brick Road","level":"1.2","depth":1,"path":"markdown/notes/README.md","ref":"markdown/notes/README.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"README.md","mtime":"2018-06-23T16:57:04.998Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-06-23T16:57:48.313Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

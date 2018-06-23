@@ -1,37 +1,179 @@
-# Radiancy
-### [Yellow Brick Road - Try Rust by Blockchain](https://udtrokia.github.io/Radiancy)
+# Introduce
 
-![Seine](./assets/Seine.png)
 
-### [Chapter 1 - Basquiat - Orphan Blockchain](/markdown/basquiat/README.md)
 
-+ One file version - [v0.0.5][1]
-+ Stable version - [v0.0.6][2]
+## SUMMARY
 
-### [Chapter 2 - Andy - Workable Blockchain](/markdown/andy/README.md)
 
-+ Stable version - [v0.0.10][3]
 
-### [Chapter 3 - Bruno - Persistent Blockchain](/markdown/bruno/README.md)
+Radiancy is a toy blockchain what I regard as a blockchain playground. Five built-in commands can help us taste the taste of  blockchain honey. It's actually about... proof of work, database, crypto transaction and wallet —— A relatively completely transaction system but lack of coinbase handlings, consensus and network.
 
-+ Stable version - [v0.0.11][4]
+In order to ensure every command runs correctlly, Radiancy will generate a database and a wallet in current path whatever you have inputted 😂
 
-### [Chapter 4 - Paul - Tradable Blockchain. Part 1](/markdown/paul/README.md)
+Anyway, Radiancy is simple and easy to use... And I wish all of Radiancy users get a pretty good experience with Radiancy.
 
-+ Stable version - [v0.0.12][5]
+That is... Welcome to the blockchain world,  and Long Live Rock n Roll.
 
-### [Chapter 5 - Vincent - Crypto Blockchain](/markdown/vincent/README.md)
 
-+ Stable version - [v0.0.13][6]
 
-### [Chapter 6 - Claude - Tradable Blockchain. Part 2](/markdown/claude/README.md)
+## INSTALLATION
 
-+ Stable version - [v0.0.14][7]
++ Cargo
 
-[1]:https://github.com/udtrokia/Radiancy/releases/tag/v0.0.5
-[2]:https://github.com/udtrokia/Radiancy/releases/tag/v0.0.6
-[3]:https://github.com/udtrokia/Radiancy/releases/tag/v0.0.10
-[4]:https://github.com/udtrokia/Radiancy/releases/tag/v0.0.11
-[5]:https://github.com/udtrokia/Radiancy/releases/tag/v0.0.12
-[6]:https://github.com/udtrokia/Radiancy/releases/tag/v0.0.12
-[7]:https://github.com/udtrokia/Radiancy/releases/tag/v0.0.13
+```
+cargo install radiancy 
+```
+
++ Shell
+
+```
+~ curl https://udtrokia.github.io/homebrew-udtrokia/scripts/radiancy.sh | sh 
+~ radiancy help
+```
+
+
+
++ Build from source code
+
+```
+~ git clone git@github.com:udtrokia/Radiancy.git
+~ cd /path/to/radiancy/ && cargo build
+```
+
+
+
+## USAGE
+
+
+
+```
+ ℷ  radiancy
+
+<-- Hello Yellow Brick Road -->
+
+Usage: radiancy COMMAND;
+
+COMMANDS:
+    create_blockchain         Generate a blockchain;
+    create_wallet             Generate a wallet;
+    get_balance               Get address balance;
+    print_chain               Print blocks in Radiancy;
+    print_address             Print blocks in Radiancy;
+    send                      Send coin between addresses;
+
+<-- GoodBye Yellow Brick Road -->
+```
+
+
+
+
+
+## COMMAND
+
+
+
+### create_blockchain
+
+> Generate a blockchain with db and default wallet.
+
+
+
+__Example__
+
+```
+radiancy create_blockchain
+```
+
+Actually, in the current version, this command is useless: `create both db and wallet in the current path.`
+
+
+
+### create_wallet
+
+> Generate a wallet file in the current path.
+
+
+
+__Example__
+
+```
+radiancy create_walelt
+```
+
+And then, you will find a file named `account.rdc` in the current path.
+
+
+
+### get_balance 
+
+> Get the balance of current account or the following.
+
+
+
+__Example__
+
++ current account
+
+```
+radiancy get_balance
+```
+
++ address as a parameter
+
+```
+radiancy get_balance address
+```
+
+
+
+### print_chain
+
+> Print blocks in Radiancy. Actually a iterator to print every block stored in db.
+
+
+
+__Example__
+
+```
+radiancy print_chain
+```
+
+### print_address
+
+> Print a test address. I set the command to test transaction... lol~
+
+
+
+__Example__
+
+```
+radiancy print_address
+```
+
+
+
+### send
+
+> Transaction part. send RDC from current address to another.
+
+
+
+__Example__
+
+```
+radiancy send <address> <amount>
+```
+
+
+
+### Contribute
+
+
+
+udtrokia.
+
+
+
+  
+
+
