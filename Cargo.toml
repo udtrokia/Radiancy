@@ -2,6 +2,10 @@
 name = "radiancy"
 version = "0.1.0"
 authors = ["mercury <udtrokia@163.com>"]
+build = "build.rs"
+description = "Try Rust by Blockchain"
+homepage = "https://udtrokia.github.io/Raiancy"
+repository = "https://github.com/udtrokia/Raiancy.git"
 
 [dependencies]
 args = "2.2.0"
