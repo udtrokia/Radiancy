@@ -18,11 +18,15 @@ That is... Welcome to the blockchain world,  and Long Live Rock n Roll.
 
 ## INSTALLATION
 
+
+
 + Cargo
 
 ```
 cargo install radiancy 
 ```
+
+
 
 + Shell
 
@@ -54,12 +58,12 @@ cargo install radiancy
 Usage: radiancy COMMAND;
 
 COMMANDS:
+    create_account            Generate an default address;
     create_blockchain         Generate a blockchain;
-    create_wallet             Generate a wallet;
     get_balance               Get address balance;
     print_chain               Print blocks in Radiancy;
-    print_address             Print blocks in Radiancy;
-    send                      Send coin between addresses;
+    print_address             Print a test address;
+    send                      Send coin to another address;
 
 <-- GoodBye Yellow Brick Road -->
 ```
@@ -69,6 +73,22 @@ COMMANDS:
 
 
 ## COMMAND
+
+
+
+### create_account
+
+> Generate an account file in the current path.
+
+
+
+__Example__
+
+```
+radiancy create_account
+```
+
+And then, you will find a file named `account.rdc` in the current path.
 
 
 
@@ -85,22 +105,6 @@ radiancy create_blockchain
 ```
 
 Actually, in the current version, this command is useless: `create both db and wallet in the current path.`
-
-
-
-### create_wallet
-
-> Generate a wallet file in the current path.
-
-
-
-__Example__
-
-```
-radiancy create_walelt
-```
-
-And then, you will find a file named `account.rdc` in the current path.
 
 
 
@@ -137,6 +141,8 @@ __Example__
 ```
 radiancy print_chain
 ```
+
+
 
 ### print_address
 

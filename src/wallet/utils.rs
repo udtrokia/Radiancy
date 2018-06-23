@@ -6,6 +6,7 @@ use sha2::{Sha256,Digest};
 use wallet::account::Account;
 use std::fs::File;
 use std::io::prelude::*;
+use std::env;
 use bincode::{serialize, deserialize};
 
 // account
@@ -19,9 +20,11 @@ pub fn new_account() -> Account {
 }
 
 pub fn create_account() {
-    let _exist = File::open("account.rdc").is_ok();
+    let mut path =  env::home_dir().unwrap();
+    path.push(".radiancy/wallet/default-account.rdc");
+    let _exist = File::open(path.to_owned()).is_ok();
     if _exist == true { return;};
-    let buf = File::create("account.rdc");
+    let buf = File::create(path);
     assert_eq!(buf.is_ok(), true);
     let mut _file = buf.unwrap();    
     let _res = _file.write( &serialize(&new_account()).unwrap() );
@@ -30,7 +33,9 @@ pub fn create_account() {
 }
 
 pub fn load_account() -> Account {
-    let mut f = File::open("account.rdc").unwrap();
+    let mut path =  env::home_dir().unwrap();
+    path.push(".radiancy/wallet/default-account.rdc");    
+    let mut f = File::open(path).unwrap();
     let mut _f_buffer = vec![];
     f.read_to_end(&mut _f_buffer).unwrap();
     
