@@ -21,10 +21,10 @@ fn main() {
     wallet_path.push(".radiancy/wallet");
     
     if fs::metadata(db_path.to_owned()).is_err() {
-        fs::create_dir_all(db_path);
+        assert_eq!(fs::create_dir_all(db_path).is_ok(), true);
     }
     if fs::metadata(wallet_path.to_owned()).is_err() {
-        fs::create_dir_all(wallet_path);
+        assert_eq!(fs::create_dir_all(wallet_path).is_ok(), true);
     }
     create_account();
     

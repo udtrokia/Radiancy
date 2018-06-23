@@ -29,7 +29,7 @@ pub fn create_account() {
     let mut _file = buf.unwrap();    
     let _res = _file.write( &serialize(&new_account()).unwrap() );
     assert_eq!(_res.is_ok(), true);
-    println!("create account.... Ok(())");
+    println!("\ncreate account.... Ok(())");
 }
 
 pub fn load_account() -> Account {

@@ -5,7 +5,6 @@
  */
 
 use std::env;
-use std::fs::metadata;
 use blockchain::blockchain::Blockchain;
 
 pub struct CLI {
