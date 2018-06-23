@@ -6,11 +6,11 @@
 
 
 
-Radiancy is a toy blockchain what I regard as a blockchain playground. Five built-in commands can help us taste the taste of  blockchain honey. It's actually about... proof of work, database, crypto transaction and wallet —— A relatively completely transaction system but lack of coinbase handlings, consensus and network.
+Radiancy is a toy blockchain what I regard as a blockchain playground. Five built-in commands can help us taste the taste of  blockchain honey. It's actually about... proof of work, database, crypto transaction and wallet —— A relatively complete transaction system but lack of coinbase handlings, consensus and network.
 
-In order to ensure every command runs correctlly, Radiancy will generate a database and a wallet in current path whatever you have inputted 😂
+In order to ensure every command runs correctlly, Radiancy will generate a database and a wallet in `~/.radiancy`. whatever you have inputted 😂
 
-Anyway, Radiancy is simple and easy to use... And I wish all of Radiancy users get a pretty good experience with Radiancy.
+Anyway, Radiancy is simple and easy to use... And I wish all of Radiancy users get a pretty good experience with it.
 
 That is... Welcome to the blockchain world,  and Long Live Rock n Roll.
 
