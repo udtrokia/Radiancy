@@ -58,7 +58,7 @@ cargo install radiancy
 Usage: radiancy COMMAND;
 
 COMMANDS:
-    create_account            Generate an default address;
+    create_account            Generate a default address;
     create_blockchain         Generate a blockchain;
     get_balance               Get address balance;
     print_chain               Print blocks in Radiancy;

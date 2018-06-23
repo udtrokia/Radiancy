@@ -244,10 +244,14 @@
 <p>That is... Welcome to the blockchain world,  and Long Live Rock n Roll.</p>
 <h2 id="installation">INSTALLATION</h2>
 <ul>
+<li>Cargo</li>
+</ul>
+<pre><code>cargo install radiancy
+</code></pre><ul>
 <li>Shell</li>
 </ul>
 <pre><code>~ curl https://udtrokia.github.io/homebrew-udtrokia/scripts/radiancy.sh | sh 
-~ source ~/.bashrc &amp;&amp; radiancy help
+~ radiancy help
 </code></pre><ul>
 <li>Build from source code</li>
 </ul>
@@ -261,15 +265,22 @@
 Usage: radiancy COMMAND;
 
 COMMANDS:
+    create_account            Generate a default address;
     create_blockchain         Generate a blockchain;
-    create_wallet             Generate a wallet;
     get_balance               Get address balance;
     print_chain               Print blocks in Radiancy;
-    print_address             Print blocks in Radiancy;
-    send                      Send coin between addresses;
+    print_address             Print a test address;
+    send                      Send coin to another address;
 
 &lt;-- GoodBye Yellow Brick Road --&gt;
 </code></pre><h2 id="command">COMMAND</h2>
+<h3 id="createaccount">create_account</h3>
+<blockquote>
+<p>Generate an account file in the current path.</p>
+</blockquote>
+<p><strong>Example</strong></p>
+<pre><code>radiancy create_account
+</code></pre><p>And then, you will find a file named <code>account.rdc</code> in the current path.</p>
 <h3 id="createblockchain">create_blockchain</h3>
 <blockquote>
 <p>Generate a blockchain with db and default wallet.</p>
@@ -277,13 +288,6 @@ COMMANDS:
 <p><strong>Example</strong></p>
 <pre><code>radiancy create_blockchain
 </code></pre><p>Actually, in the current version, this command is useless: <code>create both db and wallet in the current path.</code></p>
-<h3 id="createwallet">create_wallet</h3>
-<blockquote>
-<p>Generate a wallet file in the current path.</p>
-</blockquote>
-<p><strong>Example</strong></p>
-<pre><code>radiancy create_walelt
-</code></pre><p>And then, you will find a file named <code>account.rdc</code> in the current path.</p>
 <h3 id="getbalance">get_balance</h3>
 <blockquote>
 <p>Get the balance of current account or the following.</p>
@@ -315,7 +319,9 @@ COMMANDS:
 </blockquote>
 <p><strong>Example</strong></p>
 <pre><code>radiancy send &lt;address&gt; &lt;amount&gt;
-</code></pre><h3 id="contribute">Contribute</h3>
+</code></pre><h3 id="license">License</h3>
+<p>MIT</p>
+<h3 id="contribute">Contribute</h3>
 <p>udtrokia.</p>
 
                                 
@@ -356,7 +362,7 @@ COMMANDS:
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Introduce","level":"1.1","depth":1,"next":{"title":"Yellow Brick Road","level":"1.2","depth":1,"path":"markdown/notes/README.md","ref":"markdown/notes/README.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"README.md","mtime":"2018-06-23T16:57:04.998Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-06-23T16:57:48.313Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Introduce","level":"1.1","depth":1,"next":{"title":"Yellow Brick Road","level":"1.2","depth":1,"path":"markdown/notes/README.md","ref":"markdown/notes/README.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"README.md","mtime":"2018-06-23T19:16:16.382Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-06-23T19:16:28.093Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
@@ -364,10 +370,6 @@ COMMANDS:
         
     <script src="gitbook/gitbook.js"></script>
     <script src="gitbook/theme.js"></script>
-    
-        
-        <script src="gitbook/gitbook-plugin-livereload/plugin.js"></script>
-        
     
         
         <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
