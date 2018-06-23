@@ -256,7 +256,7 @@ dependencies = [
 
 [[package]]
 name = "radiancy"
-version = "0.1.0"
+version = "0.1.2"
 dependencies = [
  "args 2.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "base58 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
